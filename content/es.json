@@ -1,0 +1,182 @@
+{
+  "nav": {
+    "about": "La idea",
+    "chars": "Roomies",
+    "howto": "Cómo se juega",
+    "gallery": "Galería",
+    "media": "Míralo",
+    "contact": "Contacto",
+    "cta": "Avísame"
+  },
+  "hero": {
+    "badge": "Prototipo listo · Próximamente",
+    "tagline": "Chaos happens.",
+    "pitch": "Un juego de mesa de estrategia liviana para 2–4 jugadores sobre la gloriosa experiencia caótica de compartir un departamento. Gestiona tus 5 necesidades básicas, compite por las habitaciones compartidas y supera a tus compañeros — mientras las cartas Chaos Happens tiran tus planes por la ventana.",
+    "players": "2–4 jugadores",
+    "age": "Desde 6 años",
+    "learn": "Fácil de aprender",
+    "cta1": "Avísame en el lanzamiento",
+    "cta2": "Ver en TikTok"
+  },
+  "status": {
+    "kicker": "En qué estamos",
+    "title": "El prototipo está listo. El caos recién empieza.",
+    "body": "Roomies: Chaos Happens está totalmente probado y listo. Ahora buscamos socios y aliados para lanzar su primera tirada de producción.",
+    "cta": "Contáctanos"
+  },
+  "about": {
+    "kicker": "La idea",
+    "title": "Cuatro compañeros. Un departamento. Cero tranquilidad.",
+    "body1": "Cada jugador es un personaje único que vive bajo el mismo techo, sorteando espacios compartidos, horarios cruzados, baños ocupados, platos sucios — y alguna que otra sorpresa de una carta Chaos Happens. La vuelta de tuerca: no solo compites por sobrevivir, compites por prosperar.",
+    "body2": "El departamento es una grilla de 2×2 habitaciones — Cocina, Living, Dormitorio y Baño. Cada turno gastas fichas de paso para moverte, actuar, robar cartas o esperar, mientras cubres tus 5 necesidades básicas antes de que alguien más se te adelante.",
+    "quote": "La vida en el departamento no sigue ningún plan."
+  },
+  "needs": {
+    "kicker": "Las 5 necesidades",
+    "title": "Cinco necesidades. Un departamento hecho un caos.",
+    "intro": "Cada Roomie gestiona las mismas cinco necesidades básicas. Cubrir las cinco es requisito para poder ganar — pero cada una solo puntúa la primera vez que la cubres.",
+    "items": {
+      "sleep": {
+        "name": "Dormir",
+        "desc": "Toma la cama antes de que lo haga otro."
+      },
+      "food": {
+        "name": "Comida",
+        "desc": "Cocina algo — o asalta la heladera."
+      },
+      "hygiene": {
+        "name": "Higiene",
+        "desc": "El baño siempre está ocupado. Siempre."
+      },
+      "fun": {
+        "name": "Diversión",
+        "desc": "Juega, relájate, no hagas absolutamente nada."
+      },
+      "social": {
+        "name": "Social",
+        "desc": "Siéntate en la mesa de las Juntadas."
+      }
+    }
+  },
+  "chars": {
+    "kicker": "Conoce a los Roomies",
+    "title": "Elige tu personaje.",
+    "intro": "Cuatro compañeros muy distintos, cada uno con acciones bonus únicas que premian jugar a su estilo — se ganan una vez por partida, la primera vez que cubren su necesidad correspondiente.",
+    "items": {
+      "max": {
+        "name": "Max",
+        "role": "El Deportista",
+        "desc": "Ama el ejercicio y entrenar. Bonus: Tomar Café +2 · Moverse +1."
+      },
+      "lena": {
+        "name": "Lena",
+        "role": "La Gamer",
+        "desc": "Vive por el entretenimiento, los gadgets y los snacks. Bonus: Comer un Snack +2 · Jugar Videojuegos +1."
+      },
+      "igor": {
+        "name": "Igor",
+        "role": "El Músico",
+        "desc": "Guitarra, música y karaoke, siempre. Bonus: Cantar a Todo Pulmón +1 · Tocar la Guitarra +1."
+      },
+      "anya": {
+        "name": "Anya",
+        "role": "La Ordenada",
+        "desc": "Prolija y excelente cocinera. Bonus: Cocinar una Comida +2 · Limpiar un Desastre +1."
+      }
+    },
+    "note": "Los bonus de personaje se aplican una vez por partida, la primera vez que cubren su necesidad correspondiente."
+  },
+  "howto": {
+    "kicker": "Cómo se juega",
+    "title": "Fácil de aprender, caótico de dominar.",
+    "steps": [
+      {
+        "n": "1",
+        "title": "Elige un personaje",
+        "desc": "Cada Roomie tiene una personalidad distinta y acciones bonus únicas."
+      },
+      {
+        "n": "2",
+        "title": "Muévete y actúa",
+        "desc": "Gasta hasta 2 fichas de paso por turno para moverte, usar objetos, robar cartas o esperar."
+      },
+      {
+        "n": "3",
+        "title": "Cubre tus necesidades",
+        "desc": "Cubre las 5 necesidades para poder ganar — pero los problemas y habitaciones bloqueadas complican todo."
+      },
+      {
+        "n": "4",
+        "title": "Chaos Happens",
+        "desc": "Juega una carta de Caos sobre ti o cualquiera, en cualquier momento, gratis. El caos siempre gana."
+      }
+    ],
+    "facts": ["2–4 jugadores", "Desde 6 años", "Rápido de aprender", "Caos sin fin"]
+  },
+  "gallery": {
+    "kicker": "Sobre la mesa",
+    "title": "Míralo en acción.",
+    "intro": "Imágenes de partidas reales del prototipo.",
+    "drop": "Suelta una foto del juego"
+  },
+  "media": {
+    "kicker": "Mira el caos",
+    "title": "Acompáñanos mientras lo creamos.",
+    "tiktokTitle": "Roomies en TikTok",
+    "tiktokDesc": "Clips, detrás de escena y caos en 60 segundos.",
+    "tiktokCta": "Abrir TikTok",
+    "ytTitle": "Roomies en YouTube",
+    "ytDesc": "Partidas completas y cómo jugar.",
+    "ytCta": "Abrir YouTube"
+  },
+  "notify": {
+    "kicker": "No te pierdas el lanzamiento",
+    "title": "Sé el primero en saber cuándo sale Roomies a la venta.",
+    "body": "Déjanos tu email y te avisamos en cuanto el departamento abra sus puertas. Sin spam — solo un mensaje muy importante.",
+    "placeholder": "tu@email.com",
+    "button": "Avísame",
+    "success": "¡Estás en la lista! Te escribiremos. 🎉",
+    "error": "Ingresa un email válido.",
+    "privacy": "Solo usaremos tu email para avisarte del lanzamiento."
+  },
+  "contact": {
+    "kicker": "Saluda",
+    "title": "¿Quieres llevar Roomies a las tiendas?",
+    "body": "Socios, comercios, prensa o simplemente fans — nos encantaría saber de ti.",
+    "emailLabel": "Escríbenos",
+    "locationLabel": "Estamos en",
+    "location": "Buenos Aires, Argentina",
+    "socialLabel": "Síguenos"
+  },
+  "faq": {
+    "kicker": "Bueno saberlo",
+    "title": "Preguntas frecuentes",
+    "items": [
+      {
+        "q": "¿Cuántas personas pueden jugar?",
+        "a": "Roomies es para 2 a 4 jugadores — ideal para la noche de juegos en familia o una velada caótica con amigos."
+      },
+      {
+        "q": "¿Para qué edad es?",
+        "a": "Desde los 6 años. Es fácil para que los chicos lo aprendan y lo bastante ingenioso para mantener a los adultos tramando."
+      },
+      {
+        "q": "¿Ya puedo comprarlo?",
+        "a": "¡Todavía no! El prototipo está terminado y preparamos nuestra primera tirada. Únete a la lista para enterarte apenas esté disponible."
+      },
+      {
+        "q": "¿Cómo se gana?",
+        "a": "El juego termina cuando todos cubrieron sus 5 necesidades o se quedaron sin fichas de paso. Solo pueden ganar quienes cubrieron las 5 — entre ellos, gana quien tenga más puntos."
+      },
+      {
+        "q": "¿En qué idiomas saldrá?",
+        "a": "Planeamos varios idiomas, incluidos inglés, español y ruso. ¡Cuéntanos dónde estás!"
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "Un juego de mesa familiar sobre sobrevivir a la convivencia.",
+    "rights": "Todos los derechos reservados.",
+    "made": "Hecho con caos en Buenos Aires."
+  }
+}
