@@ -224,8 +224,8 @@ Decap CMS's `git-gateway` backend assumes Netlify Identity, which doesn't apply 
 The domain (`chaoshappens.com`) is already purchased through Vercel Domains (ADR-002) — this just needs the Vercel project deployed and the domain attached to it first (see the Vercel deploy issue in Phase 2+ Planning below).
 
 1. In GitHub: **Settings → Developer settings → OAuth Apps → New OAuth App**.
-2. **Homepage URL**: `https://chaoshappens.com`.
-3. **Authorization callback URL**: `https://chaoshappens.com/api/auth/callback` (must match exactly, including scheme/host — GitHub OAuth Apps also accept `http://localhost:<port>/api/auth/callback` if you want to test the flow locally before the real deploy is live; `public/admin/config.yml`'s `base_url` would need to match whichever one you test against).
+2. **Homepage URL**: `https://www.chaoshappens.com` (the bare domain 308-redirects to `www` — use the `www` host consistently, matching `public/admin/config.yml`'s `base_url`).
+3. **Authorization callback URL**: `https://www.chaoshappens.com/api/auth/callback` (must match exactly, including scheme/host — GitHub OAuth Apps also accept `http://localhost:<port>/api/auth/callback` if you want to test the flow locally before the real deploy is live; `public/admin/config.yml`'s `base_url` would need to match whichever one you test against).
 4. Create the app, copy the **Client ID**, generate and copy a **Client Secret**.
 5. Set `DECAP_OAUTH_CLIENT_ID` and `DECAP_OAUTH_CLIENT_SECRET` as environment variables on Vercel (Project Settings → Environment Variables) — never commit them.
 6. Visit `/admin` on the deployed site and log in with GitHub.

@@ -7,11 +7,11 @@ backend:
   name: github
   repo: Andrei-Danilin/roomies-game
   branch: master
-  # Must match wherever app/api/auth is actually reachable — chaoshappens.com is the real
-  # purchased production domain (see the Vercel deploy issue), not a placeholder. Until that
-  # deploy is live, run the CMS against a deployed preview URL, or `npm run dev` locally with
-  # base_url pointed at http://localhost:<port> for testing on the same origin.
-  base_url: https://chaoshappens.com
+  # Must match wherever app/api/auth is actually reachable. The bare domain 308-redirects to
+  # www (Vercel's default for an apex + www setup), so this has to be the www host, not the
+  # apex — a mismatch here means the GitHub OAuth App's callback URL won't match the
+  # redirect_uri this app builds dynamically from the request, and the login will fail.
+  base_url: https://www.chaoshappens.com
   auth_endpoint: api/auth
 
 media_folder: public/uploads
