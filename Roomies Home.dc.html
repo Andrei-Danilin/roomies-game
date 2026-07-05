@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="assets/content.js"></script>
+<script src="assets/image-slot.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  body { margin: 0; }
+  ::selection { background: #FFC83D; color: #2A2440; }
+  @keyframes floaty { 0%,100% { transform: translateY(0) rotate(var(--r,0deg)); } 50% { transform: translateY(-18px) rotate(var(--r,0deg)); } }
+  @keyframes floaty2 { 0%,100% { transform: translateY(0) rotate(var(--r,0deg)); } 50% { transform: translateY(14px) rotate(var(--r,0deg)); } }
+  @keyframes pop { 0% { transform: scale(0.96); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+</style>
+</helmet>
+<div style="font-family: 'Nunito', sans-serif; background: #FFF8EF; color: #2A2440; min-height: 100vh; overflow-x: hidden;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom: 2px solid #F0E6D8;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; gap: 20px;">
+      <a href="#top" style="display: flex; align-items: center; flex-shrink: 0;">
+        <img src="assets/logo.jpg" alt="Roomies" style="height: 46px; width: auto; display: block;">
+      </a>
+      <nav style="display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap;">
+        <a href="#about" style="font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 15px; color: #2A2440; text-decoration: none; padding: 8px 12px; border-radius: 10px;" style-hover="background: #FFF1DD;">{{ c.nav.about }}</a>
+        <a href="#chars" style="font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 15px; color: #2A2440; text-decoration: none; padding: 8px 12px; border-radius: 10px;" style-hover="background: #FFF1DD;">{{ c.nav.chars }}</a>
+        <a href="#howto" style="font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 15px; color: #2A2440; text-decoration: none; padding: 8px 12px; border-radius: 10px;" style-hover="background: #FFF1DD;">{{ c.nav.howto }}</a>
+        <a href="#gallery" style="font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 15px; color: #2A2440; text-decoration: none; padding: 8px 12px; border-radius: 10px;" style-hover="background: #FFF1DD;">{{ c.nav.gallery }}</a>
+        <a href="#media" style="font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 15px; color: #2A2440; text-decoration: none; padding: 8px 12px; border-radius: 10px;" style-hover="background: #FFF1DD;">{{ c.nav.media }}</a>
+        <a href="#contact" style="font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 15px; color: #2A2440; text-decoration: none; padding: 8px 12px; border-radius: 10px;" style-hover="background: #FFF1DD;">{{ c.nav.contact }}</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 14px; flex-shrink: 0;">
+        <div style="display: flex; gap: 2px; background: #F4ECDF; border-radius: 10px; padding: 3px;">
+          <sc-for list="{{ langs }}" as="lng" hint-placeholder-count="3">
+            <button onClick="{{ lng.select }}" style="{{ lng.style }}">{{ lng.label }}</button>
+          </sc-for>
+        </div>
+        <a href="#notify" style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 15px; color: #fff; background: #FF7A1A; text-decoration: none; padding: 10px 18px; border-radius: 999px; box-shadow: 0 4px 0 #D9610C; white-space: nowrap;" style-hover="transform: translateY(-1px); box-shadow: 0 5px 0 #D9610C;">{{ c.nav.cta }}</a>
+      </div>
+    </div>
+  </header>
+
+  <a id="top"></a>
+
+  <!-- ============ HERO ============ -->
+  <section style="max-width: 1200px; margin: 0 auto; padding: 40px 24px 70px;">
+    <div style="display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 44px; align-items: center;">
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 2px solid #FFE0BA; color: #E0640A; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 14px; padding: 7px 16px; border-radius: 999px; box-shadow: 0 3px 0 #F4E3CF;">
+          <span style="width: 9px; height: 9px; border-radius: 50%; background: #5BC23C; display: inline-block;"></span>{{ c.hero.badge }}
+        </div>
+        <div style="margin: 22px 0 0; display: inline-block; background: #fff; padding: 16px 22px; border-radius: 24px; box-shadow: 0 14px 38px rgba(42,36,64,0.12);">
+          <img src="assets/logo.jpg" alt="Roomies: Chaos Happens" style="display: block; width: min(420px, 70vw); height: auto;">
+        </div>
+        <p style="margin: 26px 0 0; font-size: 19px; line-height: 1.55; color: #5B5470; font-weight: 600; max-width: 520px;">{{ c.hero.pitch }}</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px;">
+          <span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 15px; background: #FFF1DD; color: #C2560A; padding: 8px 16px; border-radius: 999px;">👥 {{ c.hero.players }}</span>
+          <span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 15px; background: #E7F6FF; color: #1E83BE; padding: 8px 16px; border-radius: 999px;">🎂 {{ c.hero.age }}</span>
+          <span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 15px; background: #FFEAF4; color: #D62E83; padding: 8px 16px; border-radius: 999px;">✨ {{ c.hero.learn }}</span>
+        </div>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px;">
+          <a href="#notify" style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px; color: #fff; background: #FF7A1A; text-decoration: none; padding: 15px 30px; border-radius: 999px; box-shadow: 0 6px 0 #D9610C;" style-hover="transform: translateY(-2px); box-shadow: 0 8px 0 #D9610C;">{{ c.hero.cta1 }}</a>
+          <a href="{{ tiktokUrl }}" target="_blank" rel="noopener" style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px; color: #2A2440; background: #fff; text-decoration: none; padding: 15px 30px; border-radius: 999px; border: 2px solid #ECE0CE; box-shadow: 0 6px 0 #ECE0CE;" style-hover="transform: translateY(-2px); box-shadow: 0 8px 0 #ECE0CE;">▶ {{ c.hero.cta2 }}</a>
+        </div>
+      </div>
+      <div style="position: relative;">
+        <div style="position: absolute; inset: -14px; background: #FFE08A; border-radius: 36px; transform: rotate(-3deg);"></div>
+        <div style="position: absolute; inset: -14px; background: #B6E3F7; border-radius: 36px; transform: rotate(2.5deg);"></div>
+        <img src="assets/family.jpg" alt="The Roomies" style="position: relative; width: 100%; border-radius: 28px; display: block; box-shadow: 0 22px 50px rgba(42,36,64,0.22);">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATUS BANNER ============ -->
+  <sc-if value="{{ showStatus }}" hint-placeholder-val="{{ true }}">
+  <section style="background: #2A2440; color: #fff;">
+    <div style="max-width: 1100px; margin: 0 auto; padding: 46px 24px; display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center;">
+      <div>
+        <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; color: #FFC83D;">{{ c.status.kicker }}</div>
+        <h2 style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 30px; margin: 10px 0 10px; line-height: 1.15;">{{ c.status.title }}</h2>
+        <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #C9C3DB; max-width: 640px;">{{ c.status.body }}</p>
+      </div>
+      <a href="#contact" style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 17px; color: #2A2440; background: #FFC83D; text-decoration: none; padding: 14px 26px; border-radius: 999px; white-space: nowrap; box-shadow: 0 6px 0 #C99A1C;" style-hover="transform: translateY(-2px); box-shadow: 0 8px 0 #C99A1C;">{{ c.status.cta }}</a>
+    </div>
+  </section>
+  </sc-if>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" style="max-width: 1100px; margin: 0 auto; padding: 84px 24px;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;">
+      <div style="position: relative;">
+        <div style="position: absolute; inset: -12px; background: #C7EBA0; border-radius: 30px; transform: rotate(-2.5deg);"></div>
+        <img src="assets/board.jpg" alt="Roomies game board" style="position: relative; width: 100%; border-radius: 22px; display: block; box-shadow: 0 18px 44px rgba(42,36,64,0.2);">
+      </div>
+      <div>
+        <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; color: #FF7A1A;">{{ c.about.kicker }}</div>
+        <h2 style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 36px; line-height: 1.12; margin: 12px 0 18px;">{{ c.about.title }}</h2>
+        <p style="font-size: 17px; line-height: 1.62; color: #5B5470; margin: 0 0 16px;">{{ c.about.body1 }}</p>
+        <p style="font-size: 17px; line-height: 1.62; color: #5B5470; margin: 0 0 24px;">{{ c.about.body2 }}</p>
+        <div style="border-left: 5px solid #FF4FA3; padding: 6px 0 6px 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 22px; color: #2A2440; font-style: italic;">"{{ c.about.quote }}"</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE 5 NEEDS ============ -->
+  <section style="background: #fff; border-top: 2px solid #F0E6D8; border-bottom: 2px solid #F0E6D8;">
+    <div style="max-width: 1100px; margin: 0 auto; padding: 84px 24px; text-align: center;">
+      <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; color: #FF7A1A;">{{ c.needs.kicker }}</div>
+      <h2 style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 36px; line-height: 1.12; margin: 12px 0 14px;">{{ c.needs.title }}</h2>
+      <p style="font-size: 17px; line-height: 1.6; color: #5B5470; max-width: 560px; margin: 0 auto 44px;">{{ c.needs.intro }}</p>
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px;">
+        <sc-for list="{{ needs }}" as="need" hint-placeholder-count="5">
+          <div style="background: #FFFBF5; border: 2px solid #F0E6D8; border-radius: 22px; padding: 26px 14px; transition: transform 0.15s;" style-hover="transform: translateY(-6px);">
+            <div style="width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 14px; background: {{ need.color }};">{{ need.icon }}</div>
+            <div style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 19px; margin-bottom: 6px;">{{ need.name }}</div>
+            <div style="font-size: 14px; line-height: 1.45; color: #6B6480;">{{ need.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MEET THE ROOMIES ============ -->
+  <section id="chars" style="max-width: 1160px; margin: 0 auto; padding: 84px 24px;">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; color: #FF4FA3;">{{ c.chars.kicker }}</div>
+      <h2 style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 36px; line-height: 1.12; margin: 12px 0 14px;">{{ c.chars.title }}</h2>
+      <p style="font-size: 17px; line-height: 1.6; color: #5B5470; max-width: 560px; margin: 0 auto;">{{ c.chars.intro }}</p>
+    </div>
+    <div style="background: #fff; border: 2px solid #F0E6D8; border-radius: 28px; padding: 18px; box-shadow: 0 16px 40px rgba(42,36,64,0.08); margin-bottom: 30px;">
+      <img src="assets/characters.jpg" alt="The four Roomies" style="width: 100%; border-radius: 18px; display: block;">
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;">
+      <sc-for list="{{ chars }}" as="ch" hint-placeholder-count="4">
+        <div style="background: #fff; border: 2px solid #F0E6D8; border-radius: 22px; padding: 22px 20px; border-top: 6px solid {{ ch.color }};">
+          <div style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 22px;">{{ ch.name }}</div>
+          <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 14px; color: {{ ch.color }}; margin: 2px 0 10px;">{{ ch.role }}</div>
+          <div style="font-size: 14px; line-height: 1.5; color: #6B6480;">{{ ch.desc }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <p style="text-align: center; font-size: 13px; color: #A59CB3; margin: 18px 0 0;">{{ c.chars.note }}</p>
+  </section>
+
+  <!-- ============ HOW TO PLAY ============ -->
+  <section id="howto" style="background: #fff; border-top: 2px solid #F0E6D8; border-bottom: 2px solid #F0E6D8;">
+    <div style="max-width: 1100px; margin: 0 auto; padding: 84px 24px;">
+      <div style="text-align: center; margin-bottom: 46px;">
+        <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; color: #34B3F1;">{{ c.howto.kicker }}</div>
+        <h2 style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 36px; line-height: 1.12; margin: 12px 0 0;">{{ c.howto.title }}</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+        <sc-for list="{{ steps }}" as="step" hint-placeholder-count="4">
+          <div style="position: relative; background: #FFFBF5; border: 2px solid #F0E6D8; border-radius: 22px; padding: 30px 22px 26px;">
+            <div style="position: absolute; top: -18px; left: 22px; width: 44px; height: 44px; border-radius: 50%; background: #FF7A1A; color: #fff; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 22px; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 0 #D9610C;">{{ step.n }}</div>
+            <div style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 19px; margin: 10px 0 8px;">{{ step.title }}</div>
+            <div style="font-size: 14px; line-height: 1.5; color: #6B6480;">{{ step.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 40px;">
+        <sc-for list="{{ facts }}" as="fact" hint-placeholder-count="4">
+          <span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 15px; background: #FFF1DD; color: #C2560A; padding: 9px 18px; border-radius: 999px;">{{ fact }}</span>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY ============ -->
+  <section id="gallery" style="max-width: 1160px; margin: 0 auto; padding: 84px 24px;">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; color: #8BC34A;">{{ c.gallery.kicker }}</div>
+      <h2 style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 36px; line-height: 1.12; margin: 12px 0 14px;">{{ c.gallery.title }}</h2>
+      <p style="font-size: 17px; line-height: 1.6; color: #5B5470; max-width: 560px; margin: 0 auto;">{{ c.gallery.intro }}</p>
+    </div>
+    <div style="column-count: 3; column-gap: 16px;">
+      <div style="break-inside: avoid; margin-bottom: 16px;"><img src="assets/board.jpg" alt="Game in progress" style="width: 100%; border-radius: 18px; display: block; box-shadow: 0 10px 26px rgba(42,36,64,0.12);"></div>
+      <div style="break-inside: avoid; margin-bottom: 16px;"><img src="assets/family.jpg" alt="The Roomies" style="width: 100%; border-radius: 18px; display: block; box-shadow: 0 10px 26px rgba(42,36,64,0.12);"></div>
+      <div style="break-inside: avoid; margin-bottom: 16px;"><img src="assets/characters.jpg" alt="The characters" style="width: 100%; border-radius: 18px; display: block; box-shadow: 0 10px 26px rgba(42,36,64,0.12);"></div>
+      <div style="break-inside: avoid; margin-bottom: 16px;"><image-slot id="roomies-gal-1" shape="rounded" radius="18" placeholder="{{ c.gallery.drop }}" style="width: 100%; height: 240px; display: block;"></image-slot></div>
+      <div style="break-inside: avoid; margin-bottom: 16px;"><image-slot id="roomies-gal-2" shape="rounded" radius="18" placeholder="{{ c.gallery.drop }}" style="width: 100%; height: 300px; display: block;"></image-slot></div>
+      <div style="break-inside: avoid; margin-bottom: 16px;"><image-slot id="roomies-gal-3" shape="rounded" radius="18" placeholder="{{ c.gallery.drop }}" style="width: 100%; height: 220px; display: block;"></image-slot></div>
+    </div>
+  </section>
+
+  <!-- ============ MEDIA ============ -->
+  <section id="media" style="background: #fff; border-top: 2px solid #F0E6D8; border-bottom: 2px solid #F0E6D8;">
+    <div style="max-width: 1000px; margin: 0 auto; padding: 84px 24px;">
+      <div style="text-align: center; margin-bottom: 44px;">
+        <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; color: #FF4FA3;">{{ c.media.kicker }}</div>
+        <h2 style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 36px; line-height: 1.12; margin: 12px 0 0;">{{ c.media.title }}</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px;">
+        <a href="{{ tiktokUrl }}" target="_blank" rel="noopener" style="text-decoration: none; color: inherit; display: block; background: linear-gradient(135deg, #2A2440, #3A2F5C); border-radius: 24px; padding: 32px; box-shadow: 0 16px 38px rgba(42,36,64,0.16);" style-hover="transform: translateY(-4px);">
+          <div style="width: 56px; height: 56px; border-radius: 16px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px;">🎵</div>
+          <div style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 22px; color: #fff; margin: 18px 0 6px;">{{ c.media.tiktokTitle }}</div>
+          <div style="font-size: 15px; line-height: 1.5; color: #C9C3DB; margin-bottom: 18px;">{{ c.media.tiktokDesc }}</div>
+          <span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 15px; color: #2A2440; background: #FFC83D; padding: 9px 18px; border-radius: 999px;">{{ c.media.tiktokCta }} →</span>
+        </a>
+        <a href="{{ youtubeUrl }}" target="_blank" rel="noopener" style="text-decoration: none; color: inherit; display: block; background: #FFFBF5; border: 2px solid #F0E6D8; border-radius: 24px; padding: 32px;" style-hover="transform: translateY(-4px); border-color: #FF4FA3;">
+          <div style="width: 56px; height: 56px; border-radius: 16px; background: #FFE2E2; display: flex; align-items: center; justify-content: center; font-size: 28px;">▶️</div>
+          <div style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 22px; margin: 18px 0 6px;">{{ c.media.ytTitle }}</div>
+          <div style="font-size: 15px; line-height: 1.5; color: #6B6480; margin-bottom: 18px;">{{ c.media.ytDesc }}</div>
+          <span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 15px; color: #2A2440; background: #FFE2E2; padding: 9px 18px; border-radius: 999px;">{{ c.media.ytCta }} →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NOTIFY ============ -->
+  <section id="notify" style="max-width: 1100px; margin: 0 auto; padding: 84px 24px;">
+    <div style="position: relative; background: linear-gradient(135deg, #FF7A1A, #FF4FA3); border-radius: 32px; padding: 60px 40px; text-align: center; overflow: hidden; box-shadow: 0 24px 60px rgba(255,79,163,0.28);">
+      <div style="position: absolute; top: 30px; left: 40px; width: 50px; height: 50px; border-radius: 14px; background: rgba(255,255,255,0.18); --r: -10deg; animation: floaty 6s ease-in-out infinite;"></div>
+      <div style="position: absolute; bottom: 36px; right: 60px; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.18); animation: floaty2 5s ease-in-out infinite;"></div>
+      <div style="position: relative; z-index: 2;">
+        <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; color: rgba(255,255,255,0.85);">{{ c.notify.kicker }}</div>
+        <h2 style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 34px; line-height: 1.15; color: #fff; margin: 12px auto 14px; max-width: 620px;">{{ c.notify.title }}</h2>
+        <p style="font-size: 17px; line-height: 1.55; color: rgba(255,255,255,0.92); max-width: 540px; margin: 0 auto 28px;">{{ c.notify.body }}</p>
+
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="display: inline-flex; align-items: center; gap: 10px; background: #fff; color: #2A2440; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px; padding: 16px 28px; border-radius: 999px; animation: pop 0.4s ease;">{{ c.notify.success }}</div>
+        </sc-if>
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; max-width: 520px; margin: 0 auto;">
+            <input type="email" value="{{ email }}" onInput="{{ onEmail }}" placeholder="{{ c.notify.placeholder }}" style="flex: 1; min-width: 240px; font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 600; padding: 15px 20px; border-radius: 999px; border: none; outline: none; color: #2A2440;">
+            <button onClick="{{ submitEmail }}" style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 17px; color: #FF4FA3; background: #fff; border: none; cursor: pointer; padding: 15px 30px; border-radius: 999px; box-shadow: 0 6px 0 rgba(0,0,0,0.12);" style-hover="transform: translateY(-2px);">{{ c.notify.button }}</button>
+          </div>
+          <sc-if value="{{ emailError }}" hint-placeholder-val="{{ false }}">
+            <div style="color: #fff; font-weight: 700; font-size: 14px; margin-top: 14px; background: rgba(0,0,0,0.18); display: inline-block; padding: 7px 16px; border-radius: 999px;">{{ c.notify.error }}</div>
+          </sc-if>
+          <div style="font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 16px;">{{ c.notify.privacy }}</div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" style="background: #fff; border-top: 2px solid #F0E6D8; border-bottom: 2px solid #F0E6D8;">
+    <div style="max-width: 1000px; margin: 0 auto; padding: 84px 24px; text-align: center;">
+      <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; color: #34B3F1;">{{ c.contact.kicker }}</div>
+      <h2 style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 34px; line-height: 1.14; margin: 12px auto 14px; max-width: 560px;">{{ c.contact.title }}</h2>
+      <p style="font-size: 17px; line-height: 1.6; color: #5B5470; max-width: 520px; margin: 0 auto 40px;">{{ c.contact.body }}</p>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; text-align: left;">
+        <a href="mailto:info@chaoshappens.com" style="text-decoration: none; color: inherit; background: #FFFBF5; border: 2px solid #F0E6D8; border-radius: 22px; padding: 26px;" style-hover="border-color: #FF7A1A;">
+          <div style="font-size: 28px;">✉️</div>
+          <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 13px; color: #A59CB3; text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 4px;">{{ c.contact.emailLabel }}</div>
+          <div style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 17px; color: #2A2440;">info@chaoshappens.com</div>
+        </a>
+        <div style="background: #FFFBF5; border: 2px solid #F0E6D8; border-radius: 22px; padding: 26px;">
+          <div style="font-size: 28px;">📍</div>
+          <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 13px; color: #A59CB3; text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 4px;">{{ c.contact.locationLabel }}</div>
+          <div style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 17px; color: #2A2440;">{{ c.contact.location }}</div>
+        </div>
+        <a href="{{ tiktokUrl }}" target="_blank" rel="noopener" style="text-decoration: none; color: inherit; background: #FFFBF5; border: 2px solid #F0E6D8; border-radius: 22px; padding: 26px;" style-hover="border-color: #FF4FA3;">
+          <div style="font-size: 28px;">🎵</div>
+          <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 13px; color: #A59CB3; text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 4px;">{{ c.contact.socialLabel }}</div>
+          <div style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 17px; color: #2A2440;">@roomies.show7</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section style="max-width: 800px; margin: 0 auto; padding: 84px 24px;">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; color: #FF7A1A;">{{ c.faq.kicker }}</div>
+      <h2 style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 34px; line-height: 1.14; margin: 12px 0 0;">{{ c.faq.title }}</h2>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <sc-for list="{{ faqItems }}" as="item" hint-placeholder-count="5">
+        <div style="background: #fff; border: 2px solid #F0E6D8; border-radius: 18px; overflow: hidden;">
+          <button onClick="{{ item.toggle }}" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 20px 22px; display: flex; align-items: center; gap: 14px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px; color: #2A2440;">
+            <span style="flex: 1;">{{ item.q }}</span>
+            <span style="flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; background: #FFF1DD; color: #FF7A1A; font-size: 22px; display: flex; align-items: center; justify-content: center;">{{ item.sign }}</span>
+          </button>
+          <sc-if value="{{ item.open }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 0 22px 22px; font-size: 16px; line-height: 1.6; color: #5B5470;">{{ item.a }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="background: #2A2440; color: #fff;">
+    <div style="max-width: 1100px; margin: 0 auto; padding: 56px 24px 40px; text-align: center;">
+      <div style="display: inline-block; background: #fff; padding: 12px 18px; border-radius: 18px;">
+        <img src="assets/logo.jpg" alt="Roomies" style="height: 50px; width: auto; display: block;">
+      </div>
+      <p style="font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 18px; color: #C9C3DB; margin: 22px auto 0; max-width: 440px;">{{ c.footer.tagline }}</p>
+      <div style="display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin: 26px 0 0;">
+        <a href="{{ tiktokUrl }}" target="_blank" rel="noopener" style="color: #FFC83D; text-decoration: none; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 15px;">TikTok</a>
+        <a href="mailto:info@chaoshappens.com" style="color: #FFC83D; text-decoration: none; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 15px;">info@chaoshappens.com</a>
+      </div>
+      <div style="border-top: 1px solid rgba(255,255,255,0.12); margin-top: 32px; padding-top: 22px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 13px; color: #8A8199;">
+        <span>© 2026 Roomies: Chaos Happens · chaoshappens.com</span>
+        <span>{{ c.footer.made }}</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900},&quot;showStatus&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    let saved = null;
+    try { saved = localStorage.getItem('roomies_lang'); } catch (e) {}
+    const validLangs = ['en', 'es', 'ru'];
+    const initLang = validLangs.includes(saved) ? saved : 'en';
+    this.state = {
+      lang: initLang,
+      email: '',
+      submitted: false,
+      emailError: false,
+      openFaq: 0
+    };
+  }
+
+  setLang(id) {
+    try { localStorage.setItem('roomies_lang', id); } catch (e) {}
+    this.setState({ lang: id });
+  }
+
+  onEmail(e) { this.setState({ email: e.target.value, emailError: false }); }
+
+  submitEmail(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const val = (this.state.email || '').trim();
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    if (!ok) { this.setState({ emailError: true }); return; }
+    try {
+      const list = JSON.parse(localStorage.getItem('roomies_emails') || '[]');
+      list.push({ email: val, at: new Date().toISOString() });
+      localStorage.setItem('roomies_emails', JSON.stringify(list));
+    } catch (err) {}
+    this.setState({ submitted: true, emailError: false });
+  }
+
+  toggleFaq(i) {
+    this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i }));
+  }
+
+  renderVals() {
+    const DATA = (typeof window !== 'undefined' && window.ROOMIES_CONTENT) || null;
+    if (!DATA) return {};
+    const lang = this.state.lang;
+    const c = DATA.t[lang] || DATA.t.en;
+
+    const langs = DATA.langs.map(l => {
+      const active = l.id === lang;
+      return {
+        label: l.label,
+        select: () => this.setLang(l.id),
+        style: 'font-family: Fredoka, sans-serif; font-weight: 600; font-size: 13px; border: none; cursor: pointer; padding: 6px 11px; border-radius: 8px; '
+          + (active ? 'background: #2A2440; color: #fff;' : 'background: transparent; color: #8A8199;')
+      };
+    });
+
+    const needs = DATA.needsMeta.map(m => {
+      const tt = c.needs.items[m.key];
+      return { icon: m.icon, color: m.color, name: tt.name, desc: tt.desc };
+    });
+
+    const chars = DATA.charsMeta.map(m => {
+      const tt = c.chars.items[m.key];
+      return { color: m.color, name: tt.name, role: tt.role, desc: tt.desc };
+    });
+
+    const steps = c.howto.steps;
+    const facts = c.howto.facts;
+
+    const faqItems = c.faq.items.map((it, i) => ({
+      q: it.q, a: it.a,
+      open: this.state.openFaq === i,
+      sign: this.state.openFaq === i ? '–' : '+',
+      toggle: () => this.toggleFaq(i)
+    }));
+
+    return {
+      c,
+      langs,
+      showStatus: this.props.showStatus !== false,
+      tiktokUrl: 'https://www.tiktok.com/@roomies.show7',
+      youtubeUrl: 'http://www.youtube.com/@ShowRoomies',
+      contactEmail: 'info@chaoshappens.com',
+      needs,
+      chars,
+      steps,
+      facts,
+      faqItems,
+      email: this.state.email,
+      onEmail: (e) => this.onEmail(e),
+      submitEmail: (e) => this.submitEmail(e),
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      emailError: this.state.emailError
+    };
+  }
+}
+</script>
+</body>
+</html>

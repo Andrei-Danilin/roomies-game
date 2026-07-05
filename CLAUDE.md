@@ -1,0 +1,247 @@
+# CLAUDE.md — Roomies: Chaos Happens (chaoshappens.com)
+
+## Project Overview
+
+Trilingual (EN/ES/RU) marketing homepage for the board game **Roomies: Chaos Happens**. Recreates a high-fidelity design handoff (`Roomies Home.dc.html` + `README.md` + `assets/content.js`) as real, maintainable code — not a copy of the prototype file. Adds a git-based CMS so a non-technical owner can edit copy/images without touching code, and a waitlist email capture for the pre-launch audience.
+
+**Current phase:** Phase 1 — build the production site from the design handoff (framework scaffold, content migration, CMS wiring, email capture, deploy). No code exists yet beyond the design reference bundle.
+
+**GitHub repo:** `TBD` — not yet created; this folder is not yet a git repository.
+
+---
+
+## Task Workflow
+
+This is the mandatory process for every new task, in order. Do not skip steps.
+
+**Default: stay on the current task.** Only run this workflow (clarify → new GitHub issue → branch) when the user explicitly asks for a new task/issue. Follow-up requests that refine, extend, or fix something within the current change ("also do X", "fix this too") are work items on the **current** issue/branch — keep working there.
+
+**For continuous work and bug fixes** (no task needed): if the user describes a bug or quick change without asking for a formal task, go straight to Step 3 after confirming the current branch. Still create a branch if on master.
+
+### Step 1 — Clarify the task
+
+Before creating any issue or writing code, ask clarifying questions one by one — wait for the answer:
+
+1. **Goal** — what should be true when this task is done?
+2. **Scope / restrictions** — what is out of scope? Any constraints?
+3. **Tools / libraries** — any specific approach required or forbidden?
+4. **Complexity** — simple (single PR) or complex (multi-PR)?
+
+### Step 2 — Create GitHub issue(s)
+
+Use `gh issue create` to create the issue.
+
+#### Simple task → one issue
+```
+Title:  <verb phrase describing the outcome>
+Body:
+## Goal
+<what we are building / fixing and why>
+
+## Acceptance criteria
+- [ ] <specific, testable condition>
+
+## Technical notes
+<constraints, files to touch, patterns to follow>
+```
+
+#### Complex task → parent + child issues
+Create parent first (steps as acceptance criteria), then one child per step referencing `#<parent>`.
+
+Label simple issues `task`. Label complex parent `epic`, child issues `task`.
+
+### Step 3 — Implement
+
+- **Always check current branch first:** `git branch --show-current`
+- If on master, create a branch before touching any code.
+- Branch naming: `{issue-number}-{short-description}` (e.g. `12-add-auth-middleware`)
+- Once code is complete, run the **Verification & Review Pipeline** before handing back.
+- Open a PR per issue: `Fix #<n>: <title>`.
+- **The user manages all commits.** After changes, stop and state what files were changed. Do not run `git commit`.
+- PRs and merges to master are done by the user.
+
+```bash
+git checkout master && git pull origin master
+git checkout -b {issue-number}-{short-description}
+```
+
+---
+
+## Git Workflow
+
+- `master` is stable. **Never push directly.**
+- Every task gets its own branch from latest master.
+- Branch format: `{issue-number}-{short-description-2-5-words}`
+- **No commits without user approval.**
+- PRs and master merges: user only.
+
+---
+
+## Verification & Review Pipeline
+
+Run automatically once code changes are complete, before handing back to user:
+
+1. **Testing** — spawn `tester` agent (`.claude/agents/tester.md`). Run the project's test suite against changed files. Report failures. Fix before proceeding.
+
+2. **User checkpoint** — present the change and let the user confirm it does what they wanted. Apply corrections before continuing.
+
+3. **Static review** — spawn `code-reviewer` and `architect-reviewer` in parallel. Fix every CRITICAL/HIGH finding. Use judgement on MEDIUM.
+
+4. **Final consistency pass** — read every file touched. Update CLAUDE.md and README.md if the change adds/changes a feature, env var, or workflow rule. Spawn `doc-keeper` to validate no drift in agent files.
+
+5. **Report** — what changed, what each stage found, anything that couldn't be verified automatically.
+
+Steps 1, 3, 4 are autonomous. Step 2 is the only user gate.
+
+---
+
+## Architecture
+
+```
+Visitor ──► Next.js static/ISR page (App Router)
+              ├─ reads content/en.json, content/es.json, content/ru.json at build/render time
+              ├─ language switcher (client component, localStorage: roomies_lang)
+              ├─ notify-me form (client component) ──► POST /api/notify (Route Handler) ──► MailerLite API
+              └─ FAQ accordion (client component)
+
+Vercel Cron (weekly) ──► /api/export-subscribers (Route Handler) ──► MailerLite API (GET subscribers)
+                                                                  └─► writes CSV snapshot to backup storage
+                                                                       (Google Sheet / cloud storage — TBD at implementation time)
+
+Site owner ──► /admin (Decap CMS) ──► git commit to content/*.json ──► push ──► Vercel auto-deploy
+
+DNS (Vercel Domains: chaoshappens.com)
+  ├─ A/CNAME ──► Vercel hosting
+  └─ MX/TXT ──► Zoho Mail (info@chaoshappens.com)
+```
+
+---
+
+## Technology Stack
+
+| Concern | Library / Tool | Rationale |
+|---|---|---|
+| Language | TypeScript 5 | Type safety across content schema, components, and route handlers |
+| Framework | Next.js 14+ (App Router, static-first) | Fast static/ISR marketing site, easy Vercel deploy, Route Handlers cover the small amount of server logic needed |
+| Content storage | `content/en.json`, `content/es.json`, `content/ru.json` (no DB) | Mirrors `assets/content.js`'s existing shape; git-versioned, CMS-writable, no infra to run |
+| Domain | Vercel Domains (`chaoshappens.com`) | At-cost pricing, same dashboard as hosting, no markup vs. registrars |
+| Hosting | Vercel | Native Next.js support, git-integration deploys |
+| Email server | Zoho Mail (MX only, DNS via Vercel) | Real inbox for `info@chaoshappens.com`; Vercel itself never hosts email |
+| Waitlist capture | MailerLite | Marketing-list tool (not just transactional) — supports later launch/newsletter sends; free tier to 1,000 subscribers |
+| Subscriber backup | Weekly Vercel Cron job → CSV export | User-owned copy of emails, MailerLite is not the sole system of record |
+| Admin/content editing | Decap CMS (git-based) | No DB/backend; commits straight to `content/*.json`; auth backend (git-gateway vs. GitHub OAuth) still TBD since host is Vercel, not Netlify |
+| Testing | vitest + Playwright | Unit tests for content/validation logic, Playwright smoke tests for the interactive bits (form, switcher, accordion) |
+| Linting | eslint + @typescript-eslint + prettier | Standard TS hygiene |
+| CI/CD | Vercel git-integration deploys; Vercel Cron for the export job | No separate pipeline tool needed for a static site |
+
+---
+
+## Project Structure
+
+```
+roomes_site/
+├── app/
+│   ├── page.tsx                  ← single scrolling homepage, all 13 sections
+│   ├── layout.tsx
+│   └── api/
+│       ├── notify/route.ts       ← POST handler → MailerLite
+│       └── export-subscribers/route.ts  ← weekly cron → CSV backup
+├── components/
+│   ├── LanguageSwitcher.tsx
+│   ├── NotifyForm.tsx
+│   ├── FaqAccordion.tsx
+│   └── sections/                 ← one component per section (Hero, About, Needs, Chars, HowTo, Gallery, Media, Notify, Contact, Faq, Footer)
+├── content/
+│   ├── en.json
+│   ├── es.json
+│   └── ru.json
+├── lib/
+│   ├── content.ts                ← loads/types the content JSON, needsMeta/charsMeta constants
+│   └── mailerlite.ts             ← MailerLite API client
+├── public/
+│   ├── admin/
+│   │   ├── config.yml            ← Decap CMS collections (one per locale)
+│   │   └── index.html
+│   └── assets/                   ← logo.jpg, family.jpg, characters.jpg, board.jpg
+├── vercel.json                   ← cron schedule for export-subscribers
+├── Roomies Home.dc.html          ← design reference, do not delete
+├── README.md                     ← design handoff doc, canonical section/token spec
+├── .claude/
+│   ├── agents/
+│   └── knowledge/
+└── CLAUDE.md
+```
+
+---
+
+## Key Design Decisions
+
+See `.claude/knowledge/decisions.md` for the full ADR log. Seeded with:
+
+- **ADR-001**: Next.js (App Router, static-first) as the framework.
+- **ADR-002**: Vercel Domains + Vercel hosting for `chaoshappens.com`.
+- **ADR-003**: MailerLite for waitlist capture, with a mandatory weekly export to user-owned backup storage (MailerLite is not the system of record for emails).
+- **ADR-004**: Zoho Mail for `info@chaoshappens.com`, DNS-only via Vercel (Vercel never hosts email itself).
+- **ADR-005**: Decap CMS (git-based) for content editing; only the `t.<lang>` copy tree and gallery image array are CMS-editable — `needsMeta`/`charsMeta` (colors, icons, stable keys) stay in code.
+
+---
+
+## Key Code Patterns
+
+TODO: fill these in as patterns emerge during development.
+
+### Content loading
+```typescript
+// TODO: add canonical example — typed loader for content/<locale>.json
+```
+
+### Error handling
+```typescript
+// TODO: add error handling pattern for Route Handlers (MailerLite failures, validation errors)
+```
+
+### Logging
+```typescript
+// TODO: add logging pattern (likely minimal — static site, no request-heavy backend)
+```
+
+---
+
+## Environment Variables
+
+| Variable | Required | Description |
+|---|---|---|
+| `MAILERLITE_API_KEY` | Yes | Server-side only — used by `/api/notify` and `/api/export-subscribers`. Never expose to client bundle. |
+| `MAILERLITE_GROUP_ID` | Yes | Target list/group in MailerLite for waitlist signups. |
+| `SUBSCRIBER_BACKUP_TARGET` | Yes (once decided) | Where the weekly CSV export lands (Google Sheet ID, storage bucket path, etc.) — destination TBD at implementation time. |
+| `DECAP_OAUTH_CLIENT_ID` / `DECAP_OAUTH_CLIENT_SECRET` | Yes (once auth backend chosen) | Only if Decap CMS uses GitHub OAuth backend instead of git-gateway. |
+
+---
+
+## Test Strategy
+
+Framework: **vitest + Playwright**
+
+- **Unit tests:** content-loading/formatting helpers, notify-form email validation logic
+- **E2E/smoke tests (Playwright):** one per locale — page loads, language switch works, notify form submits (mock MailerLite), FAQ accordion toggles
+- **Run:** `npm run test`
+- **Coverage target:** not a hard gate for this profile — prioritize testing the interactive logic (form, switcher, accordion) over exhaustive unit coverage of static markup
+- TDD is optional here, not mandatory — fine to build the visual layout first and add tests around the interactive/logic pieces after
+
+---
+
+## Knowledge Base
+
+See `.claude/knowledge/` for:
+- `decisions.md` — Architecture Decision Records (ADRs)
+- `patterns.md` — code conventions and patterns
+- `references.md` — links to official docs
+
+---
+
+## Phase 2+ Planning
+
+TODO: fill in as the project evolves. Known open items:
+- Decide Decap CMS auth backend (git-gateway vs. GitHub OAuth app) — Vercel host means Netlify Identity doesn't apply.
+- Decide destination for the weekly subscriber CSV backup (Google Sheet, cloud storage, etc.).
+- Create the GitHub repo and `git init` this folder (currently not a git repository).
