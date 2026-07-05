@@ -2,26 +2,47 @@
 
 import { useState } from 'react';
 import type { Content } from '@/lib/content';
+import { isValidEmail } from '@/lib/email';
 import styles from './sections/sections.module.css';
 import { fontDisplay, fontBody } from '@/lib/theme';
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function NotifyForm({ content }: { content: Content['notify'] }) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (submitting) {
+      // Guards against a double submit (e.g. two rapid Enter presses) racing ahead of the
+      // re-render that disables the button — the disabled attribute alone isn't enough.
+      return;
+    }
     const value = email.trim();
-    if (!EMAIL_PATTERN.test(value)) {
+    if (!isValidEmail(value)) {
       setError(true);
       return;
     }
-    // TODO: wire to POST /api/notify (MailerLite) in a future issue.
-    setError(false);
-    setSubmitted(true);
+
+    setSubmitting(true);
+    try {
+      const response = await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: value }),
+      });
+      if (!response.ok) {
+        setError(true);
+        return;
+      }
+      setError(false);
+      setSubmitted(true);
+    } catch {
+      setError(true);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (submitted) {
@@ -46,7 +67,7 @@ export default function NotifyForm({ content }: { content: Content['notify'] }) 
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} noValidate>
       <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', maxWidth: 520, margin: '0 auto' }}>
         <input
           type="email"
@@ -71,6 +92,7 @@ export default function NotifyForm({ content }: { content: Content['notify'] }) 
         />
         <button
           type="submit"
+          disabled={submitting}
           className={styles.notifyButton}
           style={{
             fontFamily: fontDisplay,
@@ -79,7 +101,8 @@ export default function NotifyForm({ content }: { content: Content['notify'] }) 
             color: '#FF4FA3',
             background: '#fff',
             border: 'none',
-            cursor: 'pointer',
+            cursor: submitting ? 'default' : 'pointer',
+            opacity: submitting ? 0.7 : 1,
             padding: '15px 30px',
             borderRadius: 999,
             boxShadow: '0 6px 0 rgba(0,0,0,0.12)',

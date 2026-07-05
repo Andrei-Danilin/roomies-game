@@ -11,7 +11,9 @@
 - `lib/locale-context.tsx`'s `LocaleProvider` hydrates the persisted locale via `useSyncExternalStore` (not `useEffect` + `setState`) — this avoids both an SSR/CSR text mismatch and the `react-hooks/set-state-in-effect` lint rule. It also syncs `document.documentElement.lang` in a `useEffect`, which is legitimate there since it's synchronizing React state with a DOM attribute outside React's tree, not calling `setState`.
 
 ## Error handling pattern
-TODO: how Route Handlers (`/api/notify`, `/api/export-subscribers`) surface MailerLite/Zoho/export failures to the client vs. logs.
+- `/api/notify` (`app/api/notify/route.ts`) validates the email independently of the client (never trusts `NotifyForm`'s client-side regex as the real boundary check), then calls `lib/mailerlite.ts`'s `subscribeToWaitlist`. MailerLite failures throw a typed `MailerLiteError` (message + status) that the Route Handler catches and maps to a generic client-facing error message (`502`) — the specific MailerLite error detail (which could reveal account/API internals) never reaches the browser, only server logs. Any *other* thrown error (a bug, not a MailerLite-shaped failure) is rethrown rather than swallowed, so it surfaces as a real 500 instead of being silently miscategorized as a MailerLite problem.
+- MailerLite's own API treats "subscriber already on the list" as a success (200, not an error) — `subscribeToWaitlist` doesn't special-case duplicates.
+- TODO: apply the same pattern to `/api/export-subscribers` once that lands.
 
 ## Logging pattern
 TODO: likely minimal for a static site — decide if Route Handlers need structured logging at all, or just console output visible in Vercel's function logs.

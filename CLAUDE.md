@@ -211,8 +211,8 @@ TODO: fill these in as patterns emerge during development.
 
 | Variable | Required | Description |
 |---|---|---|
-| `MAILERLITE_API_KEY` | Yes | Server-side only — used by `/api/notify` and `/api/export-subscribers`. Never expose to client bundle. |
-| `MAILERLITE_GROUP_ID` | Yes | Target list/group in MailerLite for waitlist signups. |
+| `MAILERLITE_API_KEY` | Yes | Server-side only — used by `/api/notify` (`lib/mailerlite.ts`) and, later, `/api/export-subscribers`. Never expose to client bundle. |
+| `MAILERLITE_GROUP_ID` | Yes | Target list/group in MailerLite for waitlist signups — used by `/api/notify`. |
 | `SUBSCRIBER_BACKUP_TARGET` | Yes (once decided) | Where the weekly CSV export lands (Google Sheet ID, storage bucket path, etc.) — destination TBD at implementation time. |
 | `DECAP_OAUTH_CLIENT_ID` | Yes | GitHub OAuth App's Client ID. Not secret, but kept server-side for simplicity — used by `app/api/auth`. |
 | `DECAP_OAUTH_CLIENT_SECRET` | Yes | GitHub OAuth App's Client Secret. Server-side only — used by `app/api/auth/callback` to exchange the code for a token. Never expose to the client bundle. |
@@ -229,6 +229,17 @@ The domain (`chaoshappens.com`) is already purchased through Vercel Domains (ADR
 4. Create the app, copy the **Client ID**, generate and copy a **Client Secret**.
 5. Set `DECAP_OAUTH_CLIENT_ID` and `DECAP_OAUTH_CLIENT_SECRET` as environment variables on Vercel (Project Settings → Environment Variables) — never commit them.
 6. Visit `/admin` on the deployed site and log in with GitHub.
+
+### Setting up MailerLite for the waitlist
+
+`/api/notify` (`app/api/notify/route.ts`, `lib/mailerlite.ts`) needs a MailerLite account with an API key and a group to add subscribers to — one-time setup for the repo owner:
+
+1. Create a MailerLite account (free tier covers up to 1,000 subscribers, per ADR-003).
+2. Create a group for the waitlist (e.g. "Roomies waitlist") — copy its **Group ID** from its settings/URL.
+3. Generate an API key: **Integrations → MailerLite API → Generate new token**. Copy it immediately — MailerLite doesn't store it in plain text and won't show it again.
+4. Set `MAILERLITE_API_KEY` and `MAILERLITE_GROUP_ID` as environment variables on Vercel — never commit them.
+5. In MailerLite, create an **Automation** triggered by "subscriber joins group" for the waitlist group, with a welcome/confirmation email — this is how the confirmation email is sent; `/api/notify` only adds the subscriber to the group, it does not send email itself.
+6. Test via the live `/notify` section: submit an email, confirm it appears in the MailerLite group and the automation email arrives.
 
 ---
 
@@ -258,10 +269,11 @@ See `.claude/knowledge/` for:
 TODO: fill in as the project evolves. Known open items:
 - Vercel deploy — the domain (`chaoshappens.com`) is already purchased through Vercel Domains, but no Vercel project has been created/connected to the repo yet, so the site isn't live. Tracked as a GitHub issue; blocks finishing the Decap CMS OAuth setup (GitHub's OAuth redirect needs a real, reachable callback URL).
 - Zoho Mail MX/TXT DNS records for `info@chaoshappens.com` (ADR-004) — not required for the site or CMS to work, can happen any time after the Vercel deploy.
-- Decide destination for the weekly subscriber CSV backup (Google Sheet, cloud storage, etc.).
+- Subscriber export cron (`/api/export-subscribers`, ADR-003) — weekly backup job so MailerLite isn't the sole system of record; destination (Google Sheet, cloud storage, etc.) still undecided.
 - Gallery images aren't CMS-editable yet — `content/<locale>.json` has no image array for the gallery section; adding one is a separate, later issue if the owner needs to swap gallery photos without a code change.
 
 Resolved:
 - ~~Decide Decap CMS auth backend~~ — GitHub OAuth via a self-hosted Vercel proxy (`app/api/auth`), see ADR-007 and the setup steps above.
 - ~~Create the GitHub repo~~ — done (`Andrei-Danilin/roomies-game`).
 - ~~Purchase the domain~~ — done (`chaoshappens.com`, via Vercel Domains).
+- ~~Wire up MailerLite waitlist capture~~ — `POST /api/notify` → MailerLite via `lib/mailerlite.ts`, see the setup steps above.

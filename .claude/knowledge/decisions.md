@@ -20,6 +20,7 @@
 **Context:** Considered Resend (transactional-only, needs custom DB), Mailchimp, ConvertKit, and MailerLite for capturing "notify me at launch" signups. The user also wants subscriber emails not to live solely inside any single third-party tool, for data-security reasons.
 **Decision:** Use MailerLite as the capture/list tool (real marketing-list features, free tier to 1,000 subscribers, useful later for launch/newsletter sends) — but treat it as the sending tool only, not the system of record. Build a weekly scheduled job (Vercel Cron) that pulls the subscriber list via MailerLite's API and writes a CSV snapshot to storage the user controls.
 **Consequences:** Requires an extra Route Handler (`/api/export-subscribers`) and a decision (still open) on where the CSV backup actually lands (Google Sheet, cloud storage, etc.). MailerLite API key must stay server-side only.
+**Amendment (2026-07-05):** The capture half shipped first — `POST /api/notify` (`lib/mailerlite.ts`) adds subscribers to MailerLite. The weekly export/backup job described above does not exist yet (separate future issue, tracked in CLAUDE.md's Phase 2+ Planning) — until it lands, MailerLite is the only copy of the waitlist, which is what this ADR's "not the system of record" decision explicitly wanted to avoid. Acceptable as an incremental step for a low-volume pre-launch waitlist, but the export job shouldn't be indefinitely deferred.
 
 ## ADR-004: Email server — Zoho Mail (DNS-only via Vercel)
 **Date:** 2026-07-05
