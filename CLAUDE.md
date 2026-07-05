@@ -211,9 +211,12 @@ TODO: fill these in as patterns emerge during development.
 
 | Variable | Required | Description |
 |---|---|---|
-| `MAILERLITE_API_KEY` | Yes | Server-side only — used by `/api/notify` (`lib/mailerlite.ts`) and, later, `/api/export-subscribers`. Never expose to client bundle. |
-| `MAILERLITE_GROUP_ID` | Yes | Target list/group in MailerLite for waitlist signups — used by `/api/notify`. |
-| `SUBSCRIBER_BACKUP_TARGET` | Yes (once decided) | Where the weekly CSV export lands (Google Sheet ID, storage bucket path, etc.) — destination TBD at implementation time. |
+| `MAILERLITE_API_KEY` | Yes | Server-side only — used by `/api/notify` and `/api/export-subscribers` (both via `lib/mailerlite.ts`). Never expose to client bundle. |
+| `MAILERLITE_GROUP_ID` | Yes | Target list/group in MailerLite for waitlist signups — used by `/api/notify` and `/api/export-subscribers`. |
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Yes | Service account email for the weekly subscriber-export job (`lib/google-sheets.ts`) — used to sign the auth JWT. Not secret by itself, but kept server-side. |
+| `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` | Yes | Service account private key (PEM), used to sign the JWT for Google Sheets API access. Server-side only, never expose to client bundle. Store with literal `\n` for newlines (Vercel env vars can't hold multi-line values cleanly) — `lib/google-sheets.ts` unescapes them. |
+| `SUBSCRIBER_BACKUP_SPREADSHEET_ID` | Yes | The Google Sheet's ID (from its URL) that the weekly export appends new subscribers to. |
+| `CRON_SECRET` | Yes | Random string Vercel automatically sends as `Authorization: Bearer <value>` when it triggers `/api/export-subscribers` — the route rejects any request without a matching header, so it can't be invoked by a guessed URL. |
 | `DECAP_OAUTH_CLIENT_ID` | Yes | GitHub OAuth App's Client ID. Not secret, but kept server-side for simplicity — used by `app/api/auth`. |
 | `DECAP_OAUTH_CLIENT_SECRET` | Yes | GitHub OAuth App's Client Secret. Server-side only — used by `app/api/auth/callback` to exchange the code for a token. Never expose to the client bundle. |
 
@@ -240,6 +243,20 @@ The domain (`chaoshappens.com`) is already purchased through Vercel Domains (ADR
 4. Set `MAILERLITE_API_KEY` and `MAILERLITE_GROUP_ID` as environment variables on Vercel — never commit them.
 5. In MailerLite, create an **Automation** triggered by "subscriber joins group" for the waitlist group, with a welcome/confirmation email — this is how the confirmation email is sent; `/api/notify` only adds the subscriber to the group, it does not send email itself.
 6. Test via the live `/notify` section: submit an email, confirm it appears in the MailerLite group and the automation email arrives.
+
+### Setting up the weekly subscriber export (Google Sheets)
+
+`/api/export-subscribers` (`app/api/export-subscribers/route.ts`, `lib/google-sheets.ts`) pulls every MailerLite subscriber weekly and appends any not already recorded to a Google Sheet — closing ADR-003's "MailerLite isn't the sole system of record" requirement. One-time setup for the repo owner:
+
+1. Create (or reuse) a Google Cloud project, then enable the **Google Sheets API** for it (APIs & Services → Enable APIs → search "Google Sheets API").
+2. Create a **service account** (IAM & Admin → Service Accounts → Create Service Account) — no special role needed, access is granted per-sheet in step 4.
+3. Create a JSON key for the service account and download it. From the JSON: copy `client_email` → `GOOGLE_SERVICE_ACCOUNT_EMAIL`, and `private_key` → `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` (keep the `\n` sequences as literal two-character escapes when pasting into Vercel's env var UI).
+4. Create the Google Sheet itself (any file name), add a header row (`email`, `subscribed_at`) to row 1, then **Share** it with the service account's `client_email` as an **Editor**. **Don't rename the sheet's tab** from its default `Sheet1` — `lib/google-sheets.ts` hardcodes that tab name in its cell ranges; renaming it will make the export job fail with a generic error.
+5. Copy the Sheet's ID from its URL (`https://docs.google.com/spreadsheets/d/<SPREADSHEET_ID>/edit`) → `SUBSCRIBER_BACKUP_SPREADSHEET_ID`.
+6. Generate a random secret (16+ characters, e.g. from a password generator) → `CRON_SECRET`.
+7. Set `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`, `SUBSCRIBER_BACKUP_SPREADSHEET_ID`, and `CRON_SECRET` as environment variables on Vercel — never commit them.
+8. Redeploy so `vercel.json`'s cron schedule (`/api/export-subscribers`, weekly on Mondays) takes effect — check **Project Settings → Cron Jobs** to confirm it's registered.
+9. To test before waiting a week: manually `curl -H "Authorization: Bearer <CRON_SECRET>" https://www.chaoshappens.com/api/export-subscribers` and confirm new rows land in the Sheet.
 
 ---
 
@@ -269,7 +286,6 @@ See `.claude/knowledge/` for:
 TODO: fill in as the project evolves. Known open items:
 - Vercel deploy — the domain (`chaoshappens.com`) is already purchased through Vercel Domains, but no Vercel project has been created/connected to the repo yet, so the site isn't live. Tracked as a GitHub issue; blocks finishing the Decap CMS OAuth setup (GitHub's OAuth redirect needs a real, reachable callback URL).
 - Zoho Mail MX/TXT DNS records for `info@chaoshappens.com` (ADR-004) — not required for the site or CMS to work, can happen any time after the Vercel deploy.
-- Subscriber export cron (`/api/export-subscribers`, ADR-003) — weekly backup job so MailerLite isn't the sole system of record; destination (Google Sheet, cloud storage, etc.) still undecided.
 - Gallery images aren't CMS-editable yet — `content/<locale>.json` has no image array for the gallery section; adding one is a separate, later issue if the owner needs to swap gallery photos without a code change.
 
 Resolved:
@@ -277,3 +293,4 @@ Resolved:
 - ~~Create the GitHub repo~~ — done (`Andrei-Danilin/roomies-game`).
 - ~~Purchase the domain~~ — done (`chaoshappens.com`, via Vercel Domains).
 - ~~Wire up MailerLite waitlist capture~~ — `POST /api/notify` → MailerLite via `lib/mailerlite.ts`, see the setup steps above.
+- ~~Subscriber export cron~~ — `/api/export-subscribers` weekly job appends new MailerLite subscribers to a Google Sheet via `lib/google-sheets.ts`; destination decided (Google Sheet), see the setup steps above and ADR-003's amendment.
