@@ -1,0 +1,7 @@
+.next
+node_modules
+Roomies Home.dc.html
+playwright-report
+test-results
+*.md
+assets/content.js

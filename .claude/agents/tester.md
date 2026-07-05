@@ -9,15 +9,16 @@ You are responsible for running and interpreting tests in the chaoshappens.com p
 
 ## Testing stack
 - Frameworks: vitest (unit) + Playwright (smoke/e2e)
-- Run command: `npm run test`
+- Run commands: `npm run test` (vitest), `npm run test:e2e` (Playwright)
 - Coverage command: not a hard gate for this project (see below)
-- Test location: `tests/`
+- Test location: unit/component tests colocated with source as `*.test.ts`/`*.test.tsx`; e2e/smoke specs under `e2e/`
 
 ## What to do
 
 ### Step 1: Run tests
 ```bash
 npm run test
+npm run test:e2e
 ```
 Report: total / passed / failed / skipped. Paste failing test names and error messages.
 
