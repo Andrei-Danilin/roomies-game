@@ -1,0 +1,46 @@
+/* Hover-only rules that inline styles can't express; base look lives in each component's inline styles. */
+
+.navLink:hover {
+  background: #fff1dd;
+}
+
+.ctaPill:hover {
+  transform: translateY(-1px);
+}
+
+.heroPrimaryCta:hover {
+  transform: translateY(-2px);
+}
+
+.heroSecondaryCta:hover {
+  transform: translateY(-2px);
+}
+
+.statusCta:hover {
+  transform: translateY(-2px);
+}
+
+.needCard:hover {
+  transform: translateY(-6px);
+}
+
+.tiktokCard:hover {
+  transform: translateY(-4px);
+}
+
+.youtubeCard:hover {
+  transform: translateY(-4px);
+  border-color: #ff4fa3;
+}
+
+.notifyButton:hover {
+  transform: translateY(-2px);
+}
+
+.contactEmailCard:hover {
+  border-color: #ff7a1a;
+}
+
+.contactSocialCard:hover {
+  border-color: #ff4fa3;
+}

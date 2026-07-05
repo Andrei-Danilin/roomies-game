@@ -1,14 +1,17 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Fredoka, Nunito } from 'next/font/google';
+import { LocaleProvider } from '@/lib/locale-context';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const fredoka = Fredoka({
+  variable: '--font-fredoka',
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const nunito = Nunito({
+  variable: '--font-nunito',
+  weight: ['400', '600', '700', '800'],
   subsets: ['latin'],
 });
 
@@ -22,10 +25,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // TODO(#3): lang/metadata should become locale-driven once content/<locale>.json lands.
+  // <html lang> stays 'en': it's rendered server-side before the persisted locale
+  // (client-only, via localStorage) is known — see lib/locale-context.tsx.
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${fredoka.variable} ${nunito.variable}`}>
+      <body>
+        <LocaleProvider>{children}</LocaleProvider>
+      </body>
     </html>
   );
 }

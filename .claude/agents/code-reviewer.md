@@ -21,7 +21,7 @@ You are a senior TypeScript/Next.js developer reviewing code changes for the cha
 - `const`/`let` only, async/await (no raw Promise chains)
 
 ### Framework conventions
-- Server Components by default; `"use client"` only on the language switcher, notify form, and FAQ accordion
+- Server Components by default; `"use client"` only on the language switcher, notify form, FAQ accordion, and the root `app/page.tsx` (needs `useContent()` to re-render all sections on language switch without a reload — see ADR-006). Section components themselves stay hook-free.
 - Route Handlers (`/api/notify`, `/api/export-subscribers`) stay thin — one external API call each, no business logic creep
 - No environment variable (`MAILERLITE_API_KEY`, etc.) ever referenced from a client component or leaked into a client bundle
 - Static export/ISR assumptions preserved — no accidental per-request DB-style calls
