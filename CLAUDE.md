@@ -214,7 +214,21 @@ TODO: fill these in as patterns emerge during development.
 | `MAILERLITE_API_KEY` | Yes | Server-side only — used by `/api/notify` and `/api/export-subscribers`. Never expose to client bundle. |
 | `MAILERLITE_GROUP_ID` | Yes | Target list/group in MailerLite for waitlist signups. |
 | `SUBSCRIBER_BACKUP_TARGET` | Yes (once decided) | Where the weekly CSV export lands (Google Sheet ID, storage bucket path, etc.) — destination TBD at implementation time. |
-| `DECAP_OAUTH_CLIENT_ID` / `DECAP_OAUTH_CLIENT_SECRET` | Yes (once auth backend chosen) | Only if Decap CMS uses GitHub OAuth backend instead of git-gateway. |
+| `DECAP_OAUTH_CLIENT_ID` | Yes | GitHub OAuth App's Client ID. Not secret, but kept server-side for simplicity — used by `app/api/auth`. |
+| `DECAP_OAUTH_CLIENT_SECRET` | Yes | GitHub OAuth App's Client Secret. Server-side only — used by `app/api/auth/callback` to exchange the code for a token. Never expose to the client bundle. |
+
+### Setting up Decap CMS's GitHub OAuth App
+
+Decap CMS's `git-gateway` backend assumes Netlify Identity, which doesn't apply here (site is on Vercel) — see ADR-007 in `.claude/knowledge/decisions.md`. Instead, `public/admin/config.yml` uses the `github` backend with a self-hosted OAuth proxy (`app/api/auth`, `app/api/auth/callback`), so a GitHub OAuth App must be created once, by the repo owner:
+
+The domain (`chaoshappens.com`) is already purchased through Vercel Domains (ADR-002) — this just needs the Vercel project deployed and the domain attached to it first (see the Vercel deploy issue in Phase 2+ Planning below).
+
+1. In GitHub: **Settings → Developer settings → OAuth Apps → New OAuth App**.
+2. **Homepage URL**: `https://chaoshappens.com`.
+3. **Authorization callback URL**: `https://chaoshappens.com/api/auth/callback` (must match exactly, including scheme/host — GitHub OAuth Apps also accept `http://localhost:<port>/api/auth/callback` if you want to test the flow locally before the real deploy is live; `public/admin/config.yml`'s `base_url` would need to match whichever one you test against).
+4. Create the app, copy the **Client ID**, generate and copy a **Client Secret**.
+5. Set `DECAP_OAUTH_CLIENT_ID` and `DECAP_OAUTH_CLIENT_SECRET` as environment variables on Vercel (Project Settings → Environment Variables) — never commit them.
+6. Visit `/admin` on the deployed site and log in with GitHub.
 
 ---
 
@@ -242,6 +256,12 @@ See `.claude/knowledge/` for:
 ## Phase 2+ Planning
 
 TODO: fill in as the project evolves. Known open items:
-- Decide Decap CMS auth backend (git-gateway vs. GitHub OAuth app) — Vercel host means Netlify Identity doesn't apply.
+- Vercel deploy — the domain (`chaoshappens.com`) is already purchased through Vercel Domains, but no Vercel project has been created/connected to the repo yet, so the site isn't live. Tracked as a GitHub issue; blocks finishing the Decap CMS OAuth setup (GitHub's OAuth redirect needs a real, reachable callback URL).
+- Zoho Mail MX/TXT DNS records for `info@chaoshappens.com` (ADR-004) — not required for the site or CMS to work, can happen any time after the Vercel deploy.
 - Decide destination for the weekly subscriber CSV backup (Google Sheet, cloud storage, etc.).
-- Create the GitHub repo and `git init` this folder (currently not a git repository).
+- Gallery images aren't CMS-editable yet — `content/<locale>.json` has no image array for the gallery section; adding one is a separate, later issue if the owner needs to swap gallery photos without a code change.
+
+Resolved:
+- ~~Decide Decap CMS auth backend~~ — GitHub OAuth via a self-hosted Vercel proxy (`app/api/auth`), see ADR-007 and the setup steps above.
+- ~~Create the GitHub repo~~ — done (`Andrei-Danilin/roomies-game`).
+- ~~Purchase the domain~~ — done (`chaoshappens.com`, via Vercel Domains).

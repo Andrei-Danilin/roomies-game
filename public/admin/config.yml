@@ -1,0 +1,249 @@
+# Decap CMS config. See DESIGN.md's "Content structure" section and lib/content.ts for the
+# schema this mirrors. Only the copy tree is editable here — needsMeta/charsMeta (icons,
+# colors, stable keys) stay in code per ADR-005, and gallery images aren't CMS-editable yet
+# (the gallery section doesn't have an image array in content/<locale>.json — see issue #6).
+
+backend:
+  name: github
+  repo: Andrei-Danilin/roomies-game
+  branch: master
+  # Must match wherever app/api/auth is actually reachable — chaoshappens.com is the real
+  # purchased production domain (see the Vercel deploy issue), not a placeholder. Until that
+  # deploy is live, run the CMS against a deployed preview URL, or `npm run dev` locally with
+  # base_url pointed at http://localhost:<port> for testing on the same origin.
+  base_url: https://chaoshappens.com
+  auth_endpoint: api/auth
+
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: content
+    label: Site Copy
+    files:
+      - file: content/en.json
+        label: English
+        name: en
+        fields: &content_fields
+          - label: Navigation
+            name: nav
+            widget: object
+            fields:
+              - { label: About link, name: about, widget: string }
+              - { label: Roomies link, name: chars, widget: string }
+              - { label: How to play link, name: howto, widget: string }
+              - { label: Gallery link, name: gallery, widget: string }
+              - { label: Watch link, name: media, widget: string }
+              - { label: Contact link, name: contact, widget: string }
+              - { label: Notify CTA, name: cta, widget: string }
+
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Badge, name: badge, widget: string }
+              - { label: Tagline, name: tagline, widget: string }
+              - { label: Pitch, name: pitch, widget: text }
+              - { label: Players fact, name: players, widget: string }
+              - { label: Age fact, name: age, widget: string }
+              - { label: Learn fact, name: learn, widget: string }
+              - { label: Primary CTA, name: cta1, widget: string }
+              - { label: Secondary CTA, name: cta2, widget: string }
+
+          - label: Status banner
+            name: status
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+              - { label: CTA, name: cta, widget: string }
+
+          - label: About
+            name: about
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Body paragraph 1, name: body1, widget: text }
+              - { label: Body paragraph 2, name: body2, widget: text }
+              - { label: Pull quote, name: quote, widget: string }
+
+          - label: The 5 Needs
+            name: needs
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Intro, name: intro, widget: text }
+              - label: Items
+                name: items
+                widget: object
+                fields:
+                  - label: Sleep
+                    name: sleep
+                    widget: object
+                    fields:
+                      - { label: Name, name: name, widget: string }
+                      - { label: Description, name: desc, widget: string }
+                  - label: Food
+                    name: food
+                    widget: object
+                    fields:
+                      - { label: Name, name: name, widget: string }
+                      - { label: Description, name: desc, widget: string }
+                  - label: Hygiene
+                    name: hygiene
+                    widget: object
+                    fields:
+                      - { label: Name, name: name, widget: string }
+                      - { label: Description, name: desc, widget: string }
+                  - label: Fun
+                    name: fun
+                    widget: object
+                    fields:
+                      - { label: Name, name: name, widget: string }
+                      - { label: Description, name: desc, widget: string }
+                  - label: Social
+                    name: social
+                    widget: object
+                    fields:
+                      - { label: Name, name: name, widget: string }
+                      - { label: Description, name: desc, widget: string }
+
+          - label: Meet the Roomies
+            name: chars
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Intro, name: intro, widget: text }
+              - label: Items
+                name: items
+                widget: object
+                fields:
+                  - label: Max
+                    name: max
+                    widget: object
+                    fields:
+                      - { label: Name, name: name, widget: string }
+                      - { label: Role, name: role, widget: string }
+                      - { label: Description, name: desc, widget: string }
+                  - label: Lena
+                    name: lena
+                    widget: object
+                    fields:
+                      - { label: Name, name: name, widget: string }
+                      - { label: Role, name: role, widget: string }
+                      - { label: Description, name: desc, widget: string }
+                  - label: Igor
+                    name: igor
+                    widget: object
+                    fields:
+                      - { label: Name, name: name, widget: string }
+                      - { label: Role, name: role, widget: string }
+                      - { label: Description, name: desc, widget: string }
+                  - label: Anya
+                    name: anya
+                    widget: object
+                    fields:
+                      - { label: Name, name: name, widget: string }
+                      - { label: Role, name: role, widget: string }
+                      - { label: Description, name: desc, widget: string }
+              - { label: Note, name: note, widget: string }
+
+          - label: How to play
+            name: howto
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Title, name: title, widget: string }
+              - label: Steps
+                name: steps
+                widget: list
+                fields:
+                  - { label: Number, name: n, widget: string }
+                  - { label: Title, name: title, widget: string }
+                  - { label: Description, name: desc, widget: string }
+              - label: Fact pills
+                name: facts
+                widget: list
+                field: { label: Fact, name: fact, widget: string }
+
+          - label: Gallery
+            name: gallery
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Intro, name: intro, widget: text }
+              - { label: Drop-slot placeholder text, name: drop, widget: string }
+
+          - label: Media
+            name: media
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: TikTok card title, name: tiktokTitle, widget: string }
+              - { label: TikTok card description, name: tiktokDesc, widget: text }
+              - { label: TikTok CTA, name: tiktokCta, widget: string }
+              - { label: YouTube card title, name: ytTitle, widget: string }
+              - { label: YouTube card description, name: ytDesc, widget: text }
+              - { label: YouTube CTA, name: ytCta, widget: string }
+
+          - label: Notify me
+            name: notify
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+              - { label: Email placeholder, name: placeholder, widget: string }
+              - { label: Button label, name: button, widget: string }
+              - { label: Success message, name: success, widget: string }
+              - { label: Error message, name: error, widget: string }
+              - { label: Privacy microcopy, name: privacy, widget: string }
+
+          - label: Contact
+            name: contact
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+              - { label: Email card label, name: emailLabel, widget: string }
+              - { label: Location card label, name: locationLabel, widget: string }
+              - { label: Location, name: location, widget: string }
+              - { label: Social card label, name: socialLabel, widget: string }
+
+          - label: FAQ
+            name: faq
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Title, name: title, widget: string }
+              - label: Questions
+                name: items
+                widget: list
+                fields:
+                  - { label: Question, name: q, widget: string }
+                  - { label: Answer, name: a, widget: text }
+
+          - label: Footer
+            name: footer
+            widget: object
+            fields:
+              - { label: Tagline, name: tagline, widget: string }
+              - { label: Rights line, name: rights, widget: string }
+              - { label: Made-in line, name: made, widget: string }
+
+      - file: content/es.json
+        label: Spanish
+        name: es
+        fields: *content_fields
+
+      - file: content/ru.json
+        label: Russian
+        name: ru
+        fields: *content_fields

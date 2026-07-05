@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roomies: Chaos Happens — Content Manager</title>
+    <!-- Absolute path, not Decap's default relative "config.yml": the /admin rewrite in
+         next.config.ts serves this page at /admin (no trailing slash), so a relative fetch
+         would resolve against "/" instead of "/admin/" and 404. -->
+    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
+  </head>
+  <body>
+    <!-- Pinned to an exact version, not a ^3.0.0 range: this loads unreviewed code with
+         git-push credentials, so upgrades should be a deliberate, reviewed bump. -->
+    <script src="https://unpkg.com/decap-cms@3.14.1/dist/decap-cms.js"></script>
+  </body>
+</html>
