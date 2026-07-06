@@ -102,6 +102,7 @@ export interface Content {
     title: string;
     steps: HowToStep[];
     facts: string[];
+    rulesPdf: string;
   };
   gallery: {
     kicker: string;

@@ -111,7 +111,8 @@
         "desc": "Juega una carta de Caos sobre ti o cualquiera, en cualquier momento, gratis. El caos siempre gana."
       }
     ],
-    "facts": ["2–4 jugadores", "Desde 6 años", "Rápido de aprender", "Caos sin fin"]
+    "facts": ["2–4 jugadores", "Desde 6 años", "Rápido de aprender", "Caos sin fin"],
+    "rulesPdf": "Descargar reglas completas (PDF)"
   },
   "gallery": {
     "kicker": "Sobre la mesa",

@@ -88,6 +88,28 @@ export default function HowTo({ content }: { content: Content }) {
             </span>
           ))}
         </div>
+        <div style={{ textAlign: 'center', marginTop: 32 }}>
+          <a
+            href="/assets/rules.pdf"
+            download
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              fontFamily: fontDisplay,
+              fontWeight: 600,
+              fontSize: 15,
+              color: '#fff',
+              background: '#34B3F1',
+              padding: '12px 24px',
+              borderRadius: 999,
+              textDecoration: 'none',
+              boxShadow: '0 5px 0 #1C8FC9',
+            }}
+          >
+            {content.howto.rulesPdf}
+          </a>
+        </div>
       </div>
     </section>
   );
