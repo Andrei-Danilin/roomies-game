@@ -38,9 +38,9 @@ export default function Hero({ content }: { content: Content }) {
             {content.hero.badge}
           </div>
           <div
+            className={styles.heroLogoBox}
             style={{
-              margin: '22px 0 0',
-              display: 'inline-block',
+              marginTop: 22,
               background: '#fff',
               padding: '16px 22px',
               borderRadius: 24,

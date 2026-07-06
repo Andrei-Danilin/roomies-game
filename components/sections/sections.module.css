@@ -172,3 +172,17 @@
     justify-items: center;
   }
 }
+
+.heroLogoBox {
+  display: inline-block;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+@media (max-width: 640px) {
+  .heroLogoBox {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

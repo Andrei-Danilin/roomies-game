@@ -287,6 +287,7 @@ TODO: fill in as the project evolves. Known open items:
 - Vercel deploy — the domain (`chaoshappens.com`) is already purchased through Vercel Domains, but no Vercel project has been created/connected to the repo yet, so the site isn't live. Tracked as a GitHub issue; blocks finishing the Decap CMS OAuth setup (GitHub's OAuth redirect needs a real, reachable callback URL).
 - Zoho Mail MX/TXT DNS records for `info@chaoshappens.com` (ADR-004) — not required for the site or CMS to work, can happen any time after the Vercel deploy.
 - Gallery images aren't CMS-editable yet — `content/<locale>.json` has no image array for the gallery section; adding one is a separate, later issue if the owner needs to swap gallery photos without a code change.
+- Favicon (`app/favicon.ico`, `app/icon.png`, `app/apple-icon.png`) is a placeholder — cropped programmatically from `public/assets/logo.jpg`'s mascot pillow shape. Owner is generating a proper standalone icon separately; swap these three files when it's ready (no code changes needed beyond replacing the files).
 
 Resolved:
 - ~~Decide Decap CMS auth backend~~ — GitHub OAuth via a self-hosted Vercel proxy (`app/api/auth`), see ADR-007 and the setup steps above.
