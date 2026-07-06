@@ -16,7 +16,7 @@ import Footer from '@/components/sections/Footer';
 
 export default function HomeView({ content, locale }: { content: Content; locale: Locale }) {
   return (
-    <div style={{ fontFamily: 'Nunito, sans-serif', background: '#FFF8EF', color: '#2A2440', minHeight: '100vh', overflowX: 'hidden' }}>
+    <div style={{ fontFamily: 'Nunito, sans-serif', background: '#FFF8EF', color: '#2A2440', minHeight: '100vh', overflowX: 'clip' }}>
       <Header content={content} languageSwitcher={<LanguageSwitcher locale={locale} />} />
       <a id="top" />
       <Hero content={content} />
