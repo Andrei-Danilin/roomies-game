@@ -143,6 +143,8 @@ roomes_site/
 ├── app/
 │   ├── page.tsx                  ← single scrolling homepage, all 13 sections
 │   ├── layout.tsx
+│   ├── robots.ts                 ← App Router convention: disallows /admin, /api
+│   ├── sitemap.ts                ← App Router convention: single homepage entry
 │   └── api/
 │       ├── notify/route.ts       ← POST handler → MailerLite
 │       └── export-subscribers/route.ts  ← weekly cron → CSV backup
@@ -157,6 +159,7 @@ roomes_site/
 │   └── ru.json
 ├── lib/
 │   ├── content.ts                ← loads/types the content JSON, needsMeta/charsMeta constants
+│   ├── site.ts                   ← shared siteUrl/siteTitle constants (layout.tsx, robots.ts, sitemap.ts)
 │   └── mailerlite.ts             ← MailerLite API client
 ├── public/
 │   ├── admin/

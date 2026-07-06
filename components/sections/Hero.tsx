@@ -5,6 +5,20 @@ import { fontDisplay } from '@/lib/theme';
 
 const TIKTOK_URL = 'https://www.tiktok.com/@roomies.show7';
 
+// Visible browsers/screen readers get the logo's alt text; crawlers that skip alt
+// attributes (many readability/AI extractors do) still get real text via this node.
+const srOnly: React.CSSProperties = {
+  position: 'absolute',
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
+};
+
 export default function Hero({ content }: { content: Content }) {
   return (
     <section style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 24px 70px' }}>
@@ -47,14 +61,19 @@ export default function Hero({ content }: { content: Content }) {
               boxShadow: '0 14px 38px rgba(42,36,64,0.12)',
             }}
           >
-            <Image
-              src="/assets/logo.jpg"
-              alt="Roomies: Chaos Happens"
-              width={420}
-              height={280}
-              style={{ display: 'block', width: 'min(420px, 70vw)', height: 'auto' }}
-              priority
-            />
+            <h1 style={{ margin: 0 }}>
+              <span style={srOnly}>
+                Roomies: Chaos Happens — {content.hero.tagline}
+              </span>
+              <Image
+                src="/assets/logo.jpg"
+                alt=""
+                width={420}
+                height={280}
+                style={{ display: 'block', width: 'min(420px, 70vw)', height: 'auto' }}
+                priority
+              />
+            </h1>
           </div>
           <p
             style={{

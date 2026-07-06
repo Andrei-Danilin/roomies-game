@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Fredoka, Nunito } from 'next/font/google';
 import { LocaleProvider } from '@/lib/locale-context';
+import { siteUrl, siteTitle } from '@/lib/site';
 import './globals.css';
 
 const fredoka = Fredoka({
@@ -15,9 +16,31 @@ const nunito = Nunito({
   subsets: ['latin'],
 });
 
+const title = siteTitle;
+const description =
+  'A light-to-medium strategy board game for 2–4 players about the gloriously chaotic experience of sharing an apartment. Manage your 5 basic needs, compete for shared rooms, and outsmart your roommates.';
+
 export const metadata: Metadata = {
-  title: 'Roomies: Chaos Happens',
-  description: 'Trilingual marketing site for the board game Roomies: Chaos Happens.',
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  alternates: {
+    canonical: siteUrl,
+  },
+  openGraph: {
+    title,
+    description,
+    url: siteUrl,
+    siteName: title,
+    images: [{ url: '/assets/board.jpg', width: 1280, height: 960, alt: title }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: ['/assets/board.jpg'],
+  },
 };
 
 export default function RootLayout({
