@@ -102,7 +102,7 @@ Visitor ──► Next.js static/ISR page (App Router)
               ├─ reads content/en.json, content/es.json, content/ru.json at build/render time
               ├─ language switcher (client component, localStorage: roomies_lang)
               ├─ notify-me form (client component) ──► POST /api/notify (Route Handler) ──► MailerLite API
-              └─ FAQ accordion (client component)
+              └─ FAQ accordion (client component) + FAQPage JSON-LD (schema.org, rendered server-side in Faq.tsx)
 
 Vercel Cron (weekly) ──► /api/export-subscribers (Route Handler) ──► MailerLite API (GET subscribers)
                                                                   └─► writes CSV snapshot to backup storage
@@ -267,7 +267,7 @@ The domain (`chaoshappens.com`) is already purchased through Vercel Domains (ADR
 
 Framework: **vitest + Playwright**
 
-- **Unit tests:** content-loading/formatting helpers, notify-form email validation logic
+- **Unit tests:** content-loading/formatting helpers, notify-form email validation logic, FAQ JSON-LD structural correctness and script-injection safety (`Faq.test.tsx`)
 - **E2E/smoke tests (Playwright):** one per locale — page loads, language switch works, notify form submits (mock MailerLite), FAQ accordion toggles
 - **Run:** `npm run test`
 - **Coverage target:** not a hard gate for this profile — prioritize testing the interactive logic (form, switcher, accordion) over exhaustive unit coverage of static markup
