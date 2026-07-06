@@ -6,6 +6,9 @@ const photos = [
   { src: '/assets/board.jpg', alt: 'Game in progress', width: 1280, height: 960 },
   { src: '/assets/family.jpg', alt: 'The Roomies', width: 705, height: 1280 },
   { src: '/assets/characters.jpg', alt: 'The characters', width: 1280, height: 853 },
+  { src: '/assets/gallery-cover.jpg', alt: 'Roomies: Chaos Happens box cover', width: 1252, height: 1280 },
+  { src: '/assets/gallery-setup.jpg', alt: 'Full game setup on the table', width: 960, height: 1280 },
+  { src: '/assets/gallery-unboxing.jpg', alt: 'Unboxing the game', width: 669, height: 1280 },
 ];
 
 export default function Gallery({ content }: { content: Content }) {
@@ -55,30 +58,6 @@ export default function Gallery({ content }: { content: Content }) {
                 boxShadow: '0 10px 26px rgba(42,36,64,0.12)',
               }}
             />
-          </div>
-        ))}
-        {[240, 300, 220].map((height, i) => (
-          <div key={i} style={{ breakInside: 'avoid', marginBottom: 16 }}>
-            <div
-              style={{
-                width: '100%',
-                height,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                padding: '0 16px',
-                borderRadius: 18,
-                background: '#FFFBF5',
-                border: '2px dashed #F0E6D8',
-                color: '#A59CB3',
-                fontFamily: fontDisplay,
-                fontWeight: 600,
-                fontSize: 14,
-              }}
-            >
-              {content.gallery.drop}
-            </div>
           </div>
         ))}
       </div>
