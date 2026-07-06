@@ -1,4 +1,5 @@
 import type { Content } from '@/lib/content';
+import styles from './sections.module.css';
 import { fontDisplay } from '@/lib/theme';
 
 export default function HowTo({ content }: { content: Content }) {
@@ -30,7 +31,7 @@ export default function HowTo({ content }: { content: Content }) {
             {content.howto.title}
           </h2>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+        <div className={styles.howtoGrid}>
           {content.howto.steps.map((step) => (
             <div
               key={step.n}

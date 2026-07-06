@@ -8,14 +8,7 @@ const TIKTOK_URL = 'https://www.tiktok.com/@roomies.show7';
 export default function Hero({ content }: { content: Content }) {
   return (
     <section style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 24px 70px' }}>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1.05fr 0.95fr',
-          gap: 44,
-          alignItems: 'center',
-        }}
-      >
+      <div className={styles.heroGrid}>
         <div>
           <div
             style={{

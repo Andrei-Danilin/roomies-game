@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import type { Content } from '@/lib/content';
+import styles from './sections.module.css';
 import { fontDisplay } from '@/lib/theme';
 
 const photos = [
@@ -42,7 +43,7 @@ export default function Gallery({ content }: { content: Content }) {
           {content.gallery.intro}
         </p>
       </div>
-      <div style={{ columnCount: 3, columnGap: 16 }}>
+      <div className={styles.galleryColumns}>
         {photos.map((photo) => (
           <div key={photo.src} style={{ breakInside: 'avoid', marginBottom: 16 }}>
             <Image

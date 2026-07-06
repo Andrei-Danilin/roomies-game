@@ -1,18 +1,12 @@
 import Image from 'next/image';
 import type { Content } from '@/lib/content';
+import styles from './sections.module.css';
 import { fontDisplay } from '@/lib/theme';
 
 export default function About({ content }: { content: Content }) {
   return (
     <section id="about" style={{ maxWidth: 1100, margin: '0 auto', padding: '84px 24px' }}>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 56,
-          alignItems: 'center',
-        }}
-      >
+      <div className={styles.aboutGrid}>
         <div style={{ position: 'relative' }}>
           <div
             style={{

@@ -6,14 +6,11 @@ export default function Status({ content }: { content: Content }) {
   return (
     <section style={{ background: '#2A2440', color: '#fff' }}>
       <div
+        className={styles.statusGrid}
         style={{
           maxWidth: 1100,
           margin: '0 auto',
           padding: '46px 24px',
-          display: 'grid',
-          gridTemplateColumns: '1fr auto',
-          gap: 30,
-          alignItems: 'center',
         }}
       >
         <div>

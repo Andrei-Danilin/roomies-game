@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import type { Content } from '@/lib/content';
 import { charsMeta } from '@/lib/content';
+import styles from './sections.module.css';
 import { fontDisplay } from '@/lib/theme';
 
 export default function Chars({ content }: { content: Content }) {
@@ -52,7 +53,7 @@ export default function Chars({ content }: { content: Content }) {
           style={{ width: '100%', height: 'auto', borderRadius: 18, display: 'block' }}
         />
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18 }}>
+      <div className={styles.charsGrid}>
         {charsMeta.map((meta) => {
           const item = content.chars.items[meta.key];
           return (

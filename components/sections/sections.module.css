@@ -44,3 +44,131 @@
 .contactSocialCard:hover {
   border-color: #ff4fa3;
 }
+
+/* Header nav: desktop links/actions vs. mobile hamburger toggle */
+.navDesktopNav {
+  display: flex;
+}
+
+.navDesktopActions {
+  display: flex;
+}
+
+.menuToggle {
+  display: none;
+}
+
+.navMobileMenu {
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .navDesktopNav,
+  .navDesktopActions {
+    display: none;
+  }
+
+  .menuToggle {
+    display: flex;
+  }
+}
+
+@media (min-width: 901px) {
+  .navMobileMenu {
+    display: none;
+  }
+}
+
+/* Card grids: collapse to a single column on narrow viewports */
+.needsGrid,
+.charsGrid,
+.howtoGrid,
+.contactGrid {
+  display: grid;
+  gap: 18px;
+}
+
+.needsGrid {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.charsGrid,
+.howtoGrid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.contactGrid {
+  grid-template-columns: repeat(3, 1fr);
+  text-align: left;
+}
+
+@media (max-width: 640px) {
+  .needsGrid,
+  .charsGrid,
+  .howtoGrid,
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.galleryColumns {
+  column-count: 3;
+  column-gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .galleryColumns {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .galleryColumns {
+    column-count: 1;
+  }
+}
+
+/* Two-column layouts (image+text / side-by-side cards): stack on mobile */
+.aboutGrid,
+.heroGrid,
+.mediaGrid,
+.statusGrid {
+  display: grid;
+}
+
+.aboutGrid {
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.heroGrid {
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 44px;
+  align-items: center;
+}
+
+.mediaGrid {
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.statusGrid {
+  grid-template-columns: 1fr auto;
+  gap: 30px;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .aboutGrid,
+  .heroGrid,
+  .mediaGrid,
+  .statusGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statusGrid {
+    text-align: center;
+    justify-items: center;
+  }
+}

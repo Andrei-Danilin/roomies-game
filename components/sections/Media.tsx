@@ -34,7 +34,7 @@ export default function Media({ content }: { content: Content }) {
             {content.media.title}
           </h2>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22 }}>
+        <div className={styles.mediaGrid}>
           <a
             href={TIKTOK_URL}
             target="_blank"

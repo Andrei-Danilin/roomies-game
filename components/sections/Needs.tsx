@@ -33,7 +33,7 @@ export default function Needs({ content }: { content: Content }) {
         <p style={{ fontSize: 17, lineHeight: 1.6, color: '#5B5470', maxWidth: 560, margin: '0 auto 44px' }}>
           {content.needs.intro}
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 18 }}>
+        <div className={styles.needsGrid}>
           {needsMeta.map((meta) => {
             const item = content.needs.items[meta.key];
             return (

@@ -35,7 +35,7 @@ export default function Contact({ content }: { content: Content }) {
         <p style={{ fontSize: 17, lineHeight: 1.6, color: '#5B5470', maxWidth: 520, margin: '0 auto 40px' }}>
           {content.contact.body}
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18, textAlign: 'left' }}>
+        <div className={styles.contactGrid}>
           <a
             href="mailto:info@chaoshappens.com"
             className={styles.contactEmailCard}
