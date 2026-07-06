@@ -98,11 +98,12 @@ Steps 1, 3, 4 are autonomous. Step 2 is the only user gate.
 ## Architecture
 
 ```
-Visitor ──► Next.js static/ISR page (App Router)
-              ├─ reads content/en.json, content/es.json, content/ru.json at build/render time
-              ├─ language switcher (client component, localStorage: roomies_lang)
-              ├─ notify-me form (client component) ──► POST /api/notify (Route Handler) ──► MailerLite API
-              └─ FAQ accordion (client component) + FAQPage JSON-LD (schema.org, rendered server-side in Faq.tsx)
+Visitor ──► /  (proxy.ts redirects to /en, /es, or /ru based on NEXT_LOCALE cookie, default en)
+              └─► /[locale] (Next.js Server Component, statically generated per locale via generateStaticParams)
+                    ├─ reads content/<locale>.json at build time
+                    ├─ language switcher (client component, sets NEXT_LOCALE cookie, next/link to /[locale])
+                    ├─ notify-me form (client component) ──► POST /api/notify (Route Handler) ──► MailerLite API
+                    └─ FAQ accordion (client component) + FAQPage JSON-LD (schema.org, rendered server-side in Faq.tsx)
 
 Vercel Cron (weekly) ──► /api/export-subscribers (Route Handler) ──► MailerLite API (GET subscribers)
                                                                   └─► writes CSV snapshot to backup storage
@@ -140,15 +141,18 @@ DNS (Vercel Domains: chaoshappens.com)
 
 ```
 roomes_site/
+├── proxy.ts                      ← Next 16 "middleware": 307-redirects bare "/" to a locale via NEXT_LOCALE cookie
 ├── app/
-│   ├── page.tsx                  ← single scrolling homepage, all 13 sections
-│   ├── layout.tsx
+│   ├── [locale]/
+│   │   ├── layout.tsx            ← root layout: generateStaticParams (en/es/ru), dynamicParams=false, generateMetadata (hreflang)
+│   │   └── page.tsx              ← thin Server Component, renders HomeView
 │   ├── robots.ts                 ← App Router convention: disallows /admin, /api
-│   ├── sitemap.ts                ← App Router convention: single homepage entry
+│   ├── sitemap.ts                ← App Router convention: 3 locale URLs with hreflang alternates
 │   └── api/
 │       ├── notify/route.ts       ← POST handler → MailerLite
 │       └── export-subscribers/route.ts  ← weekly cron → CSV backup
 ├── components/
+│   ├── HomeView.tsx              ← homepage content, all 13 sections, takes content/locale as props
 │   ├── LanguageSwitcher.tsx
 │   ├── NotifyForm.tsx
 │   ├── FaqAccordion.tsx

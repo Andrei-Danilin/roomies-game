@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import en from '@/content/en.json';
 import es from '@/content/es.json';
 import ru from '@/content/ru.json';
@@ -155,6 +156,14 @@ const contentByLocale: Record<Locale, Content> = { en, es, ru };
 
 export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);
+}
+
+// Shared by app/[locale]/layout.tsx and app/[locale]/page.tsx so the route-param
+// validation can't drift out of sync between the two.
+export function assertLocale(value: string): asserts value is Locale {
+  if (!isLocale(value)) {
+    notFound();
+  }
 }
 
 export function getContent(locale: string): Content {

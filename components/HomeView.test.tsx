@@ -1,15 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { LocaleProvider } from '@/lib/locale-context';
-import Home from './page';
+import type { Content } from '@/lib/content';
+import content from '@/content/en.json';
+import HomeView from './HomeView';
 
-describe('Home', () => {
+describe('HomeView', () => {
   it('renders the hero pitch and all section headings', () => {
-    render(
-      <LocaleProvider>
-        <Home />
-      </LocaleProvider>,
-    );
+    render(<HomeView content={content as Content} locale="en" />);
     expect(screen.getByText(/prototype ready/i)).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /four roommates/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /five needs/i })).toBeInTheDocument();

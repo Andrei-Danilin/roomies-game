@@ -37,7 +37,7 @@ npm run start
 | Type check | `npx tsc --noEmit` | TypeScript across the whole project |
 | Lint | `npm run lint` | ESLint (Next.js + TypeScript + React hooks rules) |
 | Format check | `npm run format:check` | Prettier |
-| Unit tests | `npm run test` | vitest + Testing Library — content loader, locale context, component rendering |
+| Unit tests | `npm run test` | vitest + Testing Library — content loader, HomeView rendering, component rendering |
 | Unit tests (watch) | `npm run test:watch` | Same, in watch mode |
 | E2E / smoke tests | `npm run test:e2e` | Playwright — page loads, language switcher, per the project's [test strategy](CLAUDE.md#test-strategy) |
 | Production build | `npm run build` | Next.js build — catches build-time/type errors static dev mode won't |
@@ -48,9 +48,9 @@ Run all of the above before opening a PR. `npm run test:e2e` starts its own dev 
 
 See [CLAUDE.md's Project Structure section](CLAUDE.md#project-structure) for the full layout. Quick orientation:
 
-- `app/page.tsx` — the single scrolling homepage, composes all 13 sections from `components/sections/`
+- `app/[locale]/page.tsx` + `components/HomeView.tsx` — the homepage, composes all 13 sections from `components/sections/`, server-rendered per locale
 - `content/{en,es,ru}.json` — all site copy, loaded via `lib/content.ts`
-- `lib/locale-context.tsx` — client-side language state (persisted to `localStorage`)
+- `proxy.ts` — redirects bare `/` to `/en`, `/es`, or `/ru` based on a `NEXT_LOCALE` cookie (no client-side locale state/`localStorage`)
 - `public/assets/` — served product photography (logo, family, characters, board)
 
 ## Environment variables

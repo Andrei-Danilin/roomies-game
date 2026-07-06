@@ -25,7 +25,7 @@ Report: total / passed / failed / skipped. Paste failing test names and error me
 ### Step 2: Check what matters, not raw coverage %
 This is a static marketing site — don't chase 80% coverage on markup/copy rendering. Instead confirm:
 - Notify-form email validation logic (client + server) is covered
-- Language switcher persists/reads `roomies_lang` correctly
+- Language switcher navigates to `/[locale]` and sets the `NEXT_LOCALE` cookie correctly
 - FAQ accordion open/close state logic is covered
 - Route Handlers (`/api/notify`, `/api/export-subscribers`) have at least one test mocking the external API (MailerLite) for both success and failure paths
 

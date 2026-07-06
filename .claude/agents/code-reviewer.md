@@ -21,7 +21,7 @@ You are a senior TypeScript/Next.js developer reviewing code changes for the cha
 - `const`/`let` only, async/await (no raw Promise chains)
 
 ### Framework conventions
-- Server Components by default; `"use client"` only on the language switcher, notify form, FAQ accordion, and the root `app/page.tsx` (needs `useContent()` to re-render all sections on language switch without a reload — see ADR-006). Section components themselves stay hook-free.
+- Server Components by default; `"use client"` only on the language switcher, notify form, and FAQ accordion — `app/[locale]/page.tsx` and `components/HomeView.tsx` are Server Components (ADR-008 restored the Server/Client split ADR-006 had amended; locale is now a routing concern, resolved via `generateStaticParams`/`getContent(locale)`, not client state). Section components themselves stay hook-free.
 - Route Handlers (`/api/notify`, `/api/export-subscribers`) stay thin — orchestration only (auth check, calling their external API(s), mapping errors), no business logic creep. `/api/export-subscribers` legitimately calls both MailerLite and Google Sheets; the "what's new" diff logic itself lives in `lib/subscriber-export.ts`, not inline in the handler.
 - No environment variable (`MAILERLITE_API_KEY`, etc.) ever referenced from a client component or leaked into a client bundle
 - Static export/ISR assumptions preserved — no accidental per-request DB-style calls

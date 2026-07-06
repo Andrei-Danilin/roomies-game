@@ -1,27 +1,31 @@
 'use client';
 
-import { langs } from '@/lib/content';
-import { useLocale } from '@/lib/locale-context';
+import Link from 'next/link';
+import { langs, type Locale } from '@/lib/content';
 import { fontDisplay } from '@/lib/theme';
 
-export default function LanguageSwitcher() {
-  const { locale, setLocale } = useLocale();
+const PREFERRED_LOCALE_COOKIE = 'NEXT_LOCALE';
 
+function rememberLocale(locale: Locale) {
+  document.cookie = `${PREFERRED_LOCALE_COOKIE}=${locale}; path=/; max-age=31536000; SameSite=Lax`;
+}
+
+export default function LanguageSwitcher({ locale }: { locale: Locale }) {
   return (
     <div style={{ display: 'flex', gap: 2, background: '#F4ECDF', borderRadius: 10, padding: 3 }}>
       {langs.map((lng) => {
         const active = lng.id === locale;
         return (
-          <button
+          <Link
             key={lng.id}
-            type="button"
-            onClick={() => setLocale(lng.id)}
-            aria-pressed={active}
+            href={`/${lng.id}`}
+            onClick={() => rememberLocale(lng.id)}
+            aria-current={active ? 'page' : undefined}
             style={{
               fontFamily: fontDisplay,
               fontWeight: 600,
               fontSize: 13,
-              border: 'none',
+              textDecoration: 'none',
               cursor: 'pointer',
               padding: '6px 11px',
               borderRadius: 8,
@@ -30,7 +34,7 @@ export default function LanguageSwitcher() {
             }}
           >
             {lng.label}
-          </button>
+          </Link>
         );
       })}
     </div>
