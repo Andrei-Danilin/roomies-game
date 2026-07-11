@@ -4,12 +4,18 @@ import styles from './sections.module.css';
 import { fontDisplay } from '@/lib/theme';
 
 const photos = [
-  { src: '/assets/board.jpg', alt: 'Game in progress', width: 1280, height: 960 },
-  { src: '/assets/family.jpg', alt: 'The Roomies', width: 705, height: 1280 },
-  { src: '/assets/characters.jpg', alt: 'The characters', width: 1280, height: 853 },
-  { src: '/assets/gallery-cover.jpg', alt: 'Roomies: Chaos Happens box cover', width: 1252, height: 1280 },
-  { src: '/assets/gallery-setup.jpg', alt: 'Full game setup on the table', width: 960, height: 1280 },
-  { src: '/assets/gallery-unboxing.jpg', alt: 'Unboxing the game', width: 669, height: 1280 },
+  { src: '/assets/gallery/gallery-01.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 905, height: 1280 },
+  { src: '/assets/gallery/gallery-02.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 904, height: 1280 },
+  { src: '/assets/gallery/gallery-03.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 905, height: 1280 },
+  { src: '/assets/gallery/gallery-04.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 721, height: 1280 },
+  { src: '/assets/gallery/gallery-05.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 720, height: 1280 },
+  { src: '/assets/gallery/gallery-06.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 720, height: 1280 },
+  { src: '/assets/gallery/gallery-07.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 721, height: 1280 },
+  { src: '/assets/gallery/gallery-08.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 669, height: 1280 },
+  { src: '/assets/gallery/gallery-09.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 1252, height: 1280 },
+  { src: '/assets/gallery/gallery-10.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 705, height: 1280 },
+  { src: '/assets/gallery/gallery-11.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 960, height: 1280 },
+  { src: '/assets/gallery/gallery-12.jpg', alt: 'Roomies: Chaos Happens gallery photo', width: 899, height: 1280 },
 ];
 
 export default function Gallery({ content }: { content: Content }) {
